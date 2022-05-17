@@ -40,10 +40,13 @@
   (quelpa-update-melpa-p nil)
   (quelpa-checkout-melpa-p nil))
 
-(use-package ivy
-  :ensure t
-  :diminish ivy-mode
-  :hook (after-init . ivy-mode))
+;;(use-package ivy
+;;  :ensure t
+;;  :diminish ivy-mode
+;;  :hook (after-init . ivy-mode))
+
+(use-package helm :ensure t)
+(global-set-key (kbd "M-x") 'helm-M-x)
 
 (global-linum-mode 1)
 ;;(global-display-line-numbers-mode t)
