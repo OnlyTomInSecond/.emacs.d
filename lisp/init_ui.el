@@ -23,6 +23,11 @@
   :config
   (load-theme 'leuven t))
 
+(use-package emacs
+    :config
+    (setq display-line-numbers-type 't)
+    (global-display-line-numbers-mode t))
+
 ;;(use-package doom-modeline
 ;; :ensure t
 ;; :hook (after-init . doom-modeline-mode)

@@ -2,8 +2,6 @@
 (setq gc-cons-threshold most-positive-fixnum
       gc-cons-percentage 0.6)
 
-
-
 ;;config the elpa mirror in China
 (require 'package)
 (setq package-archives '(("gnu"   . "https://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
@@ -40,15 +38,15 @@
   (quelpa-update-melpa-p nil)
   (quelpa-checkout-melpa-p nil))
 
-;;(use-package ivy
-;;  :ensure t
-;;  :diminish ivy-mode
-;;  :hook (after-init . ivy-mode))
+;; (use-package ivy
+;;   :ensure t
+;;   :diminish ivy-mode
+;;   :hook (after-init . ivy-mode))
 
-(use-package helm :ensure t)
-(global-set-key (kbd "M-x") 'helm-M-x)
+;;(use-package helm :ensure t)
+;;(global-set-key (kbd "M-x") 'helm-M-x)
 
-(global-linum-mode 1)
+;;(global-linum-mode 1)
 ;;(global-display-line-numbers-mode t)
 ;;(setq 'custom-file "~/.emacs.d/custom.el"
 ;; Disable Custom settings when exist
@@ -61,7 +59,7 @@
 
 (require 'init_ui)
 (require 'init_base)
-;;(require 'init_helm)
+(require 'init_helm)
 (require 'init_tools)
 (require 'init_lsp)
 (require 'init_ctags)

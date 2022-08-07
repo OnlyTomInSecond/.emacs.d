@@ -44,9 +44,15 @@
 ;; lsp-mode
 (use-package lsp-mode
   :ensure t
-  :hook (c-mode . lsp-deferred)
+  :hook (
+         (c-mode . lsp-deferred)
+         (lsp-mode . lsp-enable-which-key-integration)
+         (c++-mode . lsp-deferred)
+         (java-mode . lsp-deferred)
+         )
   :bind (:map lsp-mode-map
-         ("C-c f" . lsp-format-region)
+         ("C-c f r" . lsp-format-region)
+		 ("C-c f b" . lsp-format-buffer)
          ("C-c d" . lsp-describe-thing-at-point)
          ("C-c a" . lsp-execute-code-action)
          ("C-c r" . lsp-rename))
@@ -68,4 +74,35 @@
   (lsp-keep-workspace-alive nil)         ;; auto kill lsp server
   (lsp-eldoc-enable-hover nil))          ;; disable eldoc hover
 
+
+(use-package lsp-java 
+:ensure t
+:config (add-hook 'java-mode-hook 'lsp)
+:custom
+(lsp-java-completion-enabled t)
+)
+
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode)
+  :hook (prog-mode . company-mode))
+
+(use-package yasnippet :config (yas-global-mode))
+(use-package yasnippet-snippets :ensure t)
+
+(use-package lsp-ui
+:ensure t
+:after (lsp-mode)
+:bind (:map lsp-ui-mode-map
+         ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
+         ([remap xref-find-references] . lsp-ui-peek-find-references))
+:init (setq lsp-ui-doc-delay 1.5
+      lsp-ui-doc-position 'bottom
+	  lsp-ui-doc-max-width 100
+))
+
+(setenv "JAVA_HOME" "/usr/lib/jvm/java-18-openjdk/")
+
 (provide 'init_lsp)
+
+
