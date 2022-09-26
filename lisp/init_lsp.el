@@ -101,7 +101,7 @@
 	  lsp-ui-doc-max-width 100
 ))
 
-(setenv "JAVA_HOME" "/usr/lib/jvm/java-18-openjdk/")
+(setenv "JAVA_HOME" "/usr/lib/jvm/java-19-openjdk-amd64/")
 
 (provide 'init_lsp)
 

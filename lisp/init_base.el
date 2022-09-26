@@ -69,6 +69,8 @@
 (setq y-or-n-p-use-read-key t
       read-char-choice-use-read-key t)
 
+(electric-pair-mode 1)
+ 
 ;; A simple frame title
 (setq frame-title-format '("%b - Emacs")
       icon-title-format frame-title-format)
@@ -120,15 +122,15 @@
 ;;   ;; M-x foo should only be available in `org-mode` or modes derived from `org-mode`.
 ;;   (read-extended-command-predicate #'command-completion-default-include-p))
 
-;; ;; Type text
-;; (use-package text-mode
-;;   :ensure nil
-;;   :custom
-;;   ;; better word wrapping for CJK characters
-;;   (word-wrap-by-category t)
-;;   ;; paragraphs
-;;   (sentence-end "\\([，。、！？]\\|……\\|[,.?!][]\"')}]*\\($\\|[ \t]\\)\\)[ \t\n]*")
-;;   (sentence-end-double-space nil))
+;; Type text
+(use-package text-mode
+  :ensure nil
+  :custom
+  ;; better word wrapping for CJK characters
+  (word-wrap-by-category t)
+  ;; paragraphs
+  (sentence-end "\\([，。、！？]\\|……\\|[,.?!][]\"')}]*\\($\\|[ \t]\\)\\)[ \t\n]*")
+  (sentence-end-double-space nil))
 
 ;; Server mode.
 ;; Use emacsclient to connect
