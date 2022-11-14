@@ -2,11 +2,11 @@
   :ensure t
   :hook (prog-mode . company-mode)
   :bind (:map company-mode-map
-         ([remap completion-at-point] . company-complete)
-         :map company-active-map
-         ("C-s"     . company-filter-candidates)
-         ([tab]     . company-complete-common-or-cycle)
-         ([backtab] . company-select-previous-or-abort))
+              ([remap completion-at-point] . company-complete)
+              :map company-active-map
+              ("C-s"     . company-filter-candidates)
+              ([tab]     . company-complete-common-or-cycle)
+              ([backtab] . company-select-previous-or-abort))
   :config
   (define-advice company-capf--candidates (:around (func &rest args))
     "Try default completion styles."
@@ -45,17 +45,17 @@
 (use-package lsp-mode
   :ensure t
   :hook (
-         (c-mode . lsp-deferred)
          (lsp-mode . lsp-enable-which-key-integration)
-         (c++-mode . lsp-deferred)
-         (java-mode . lsp-deferred)
+         (c-mode . lsp)
+         (c++-mode . lsp)
+         (java-mode . lsp)
          )
   :bind (:map lsp-mode-map
-         ("C-c f r" . lsp-format-region)
-		 ("C-c f b" . lsp-format-buffer)
-         ("C-c d" . lsp-describe-thing-at-point)
-         ("C-c a" . lsp-execute-code-action)
-         ("C-c r" . lsp-rename))
+              ("C-c f r" . lsp-format-region)
+		      ("C-c f b" . lsp-format-buffer)
+              ("C-c d" . lsp-describe-thing-at-point)
+              ("C-c a" . lsp-execute-code-action)
+              ("C-c r" . lsp-rename))
   :custom
   (lsp-keymap-prefix "C-c l")
   (lsp-enable-links nil)                 ;; no clickable links
@@ -76,11 +76,11 @@
 
 
 (use-package lsp-java 
-:ensure t
-:config (add-hook 'java-mode-hook 'lsp)
-:custom
-(lsp-java-completion-enabled t)
-)
+  :ensure t
+  :config (add-hook 'java-mode-hook 'lsp)
+  :custom
+  (lsp-java-completion-enabled t)
+  )
 
 (use-package flycheck
   :ensure t
@@ -90,16 +90,16 @@
 (use-package yasnippet :config (yas-global-mode))
 (use-package yasnippet-snippets :ensure t)
 
-(use-package lsp-ui
-:ensure t
-:after (lsp-mode)
-:bind (:map lsp-ui-mode-map
-         ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
-         ([remap xref-find-references] . lsp-ui-peek-find-references))
-:init (setq lsp-ui-doc-delay 1.5
-      lsp-ui-doc-position 'bottom
-	  lsp-ui-doc-max-width 100
-))
+;;(use-package lsp-ui
+;;:ensure t
+;;:after (lsp-mode)
+;;:bind (:map lsp-ui-mode-map
+;;         ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
+;;         ([remap xref-find-references] . lsp-ui-peek-find-references))
+;;:init (setq lsp-ui-doc-delay 1.5
+;;      lsp-ui-doc-position 'bottom
+;;	  lsp-ui-doc-max-width 100
+;;))
 
 (setenv "JAVA_HOME" "/usr/lib/jvm/java-19-openjdk-amd64/")
 

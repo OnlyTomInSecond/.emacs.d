@@ -15,5 +15,8 @@
   (which-key-idle-delay 0.5)
   (which-key-add-column-padding 1))
 
+(use-package magit
+  :ensure t
+  )
 
 (provide 'init_tools)

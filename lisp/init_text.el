@@ -12,8 +12,8 @@
   :mode ("README\\(?:\\.md\\)?\\'" . gfm-mode)
   :hook (markdown-mode . visual-line-mode)
   :bind (:map markdown-mode-style-map
-         ("r" . markdown-insert-ruby-tag)
-         ("d" . markdown-insert-details))
+              ("r" . markdown-insert-ruby-tag)
+              ("d" . markdown-insert-details))
   :config
   (defun markdown-insert-ruby-tag (text ruby)
     "Insert ruby tag with `TEXT' and `RUBY' quickly."

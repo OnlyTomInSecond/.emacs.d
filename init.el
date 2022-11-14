@@ -38,18 +38,6 @@
   (quelpa-update-melpa-p nil)
   (quelpa-checkout-melpa-p nil))
 
-;; (use-package ivy
-;;   :ensure t
-;;   :diminish ivy-mode
-;;   :hook (after-init . ivy-mode))
-
-;;(use-package helm :ensure t)
-;;(global-set-key (kbd "M-x") 'helm-M-x)
-
-;;(global-linum-mode 1)
-;;(global-display-line-numbers-mode t)
-;;(setq 'custom-file "~/.emacs.d/custom.el"
-;; Disable Custom settings when exist
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
    (when (file-exists-p custom-file)
        (load custom-file))
@@ -59,10 +47,10 @@
 
 (require 'init_ui)
 (require 'init_base)
-(require 'init_helm)
 (require 'init_tools)
+(require 'init_ivy)
+(require 'init_ggtags)
 (require 'init_lsp)
-(require 'init_ctags)
 (require 'init_text)
 
 
