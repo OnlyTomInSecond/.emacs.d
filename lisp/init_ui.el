@@ -8,12 +8,9 @@
 
 (use-package emacs
   :ensure nil
-  :unless (display-graphic-p)
   :config
-  (load-theme 'leuven t)
   (setq display-line-numbers-type 't)
   (global-display-line-numbers-mode t)
-
   )
 
 (use-package help
