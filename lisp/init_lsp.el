@@ -1,7 +1,8 @@
 (use-package company
   :ensure t
   :hook (prog-mode . company-mode)
-  :bind (:map company-mode-map
+  :bind (
+         :map company-mode-map
               ([remap completion-at-point] . company-complete)
               :map company-active-map
               ("C-s"     . company-filter-candidates)
@@ -89,17 +90,6 @@
 
 (use-package yasnippet :config (yas-global-mode))
 (use-package yasnippet-snippets :ensure t)
-
-;;(use-package lsp-ui
-;;:ensure t
-;;:after (lsp-mode)
-;;:bind (:map lsp-ui-mode-map
-;;         ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
-;;         ([remap xref-find-references] . lsp-ui-peek-find-references))
-;;:init (setq lsp-ui-doc-delay 1.5
-;;      lsp-ui-doc-position 'bottom
-;;	  lsp-ui-doc-max-width 100
-;;))
 
 (setenv "JAVA_HOME" "/usr/lib/jvm/java-19-openjdk-amd64/")
 

@@ -7,7 +7,7 @@
       inhibit-startup-buffer-menu t
       )
 (setq inhibit-splash-screen t)
-(menu-bar-mode 0) 
+(menu-bar-mode 0)
 (tool-bar-mode 0)
 (scroll-bar-mode 0)
 
@@ -133,5 +133,5 @@
 (set-language-environment "UTF-8")
 (set-default-coding-systems 'utf-8)
 
-
 (provide 'init_base)
+
