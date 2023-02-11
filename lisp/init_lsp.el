@@ -91,7 +91,7 @@
 (use-package yasnippet :config (yas-global-mode))
 (use-package yasnippet-snippets :ensure t)
 
-(setenv "JAVA_HOME" "/usr/lib/jvm/java-19-openjdk-amd64/")
+(setenv "JAVA_HOME" "/usr/lib/jvm/java-19-openjdk/")
 
 (provide 'init_lsp)
 

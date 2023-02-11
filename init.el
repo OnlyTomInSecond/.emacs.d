@@ -1,13 +1,11 @@
-
 (setq gc-cons-threshold most-positive-fixnum
       gc-cons-percentage 0.6)
 
 ;;config the elpa mirror in China
 (require 'package)
-(setq package-archives '(("gnu"   . "https://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
-                         ("melpa" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
-			 ("stable-melpa" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/stable-melpa/")
-			 ))
+(setq package-archives '(("gnu"    . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+                         ("nongnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")
+                         ("melpa"  . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
 (package-initialize) ;; You might already have this line
 
 ;; Bootstrap `use-package'
@@ -45,11 +43,16 @@
 ;;
 ;;====================
 
+;; Set proxy
+;;(setq url-proxy-services '(("http" . "127.0.0.1:9080")
+;;                           ("https" . "127.0.0.1:9080")
+;;                           ))
+
 (require 'init_ui)
 (require 'init_base)
 (require 'init_tools)
 (require 'init_ivy)
-(require 'init_ggtags)
+;;(require 'init_ggtags)
 (require 'init_lsp)
 (require 'init_text)
 
