@@ -75,6 +75,10 @@
   (lsp-keep-workspace-alive nil)         ;; auto kill lsp server
   (lsp-eldoc-enable-hover nil))          ;; disable eldoc hover
 
+(use-package cc-mode
+  :init
+  (define-key c-mode-map  [(tab)] 'company-complete)
+  (define-key c++-mode-map  [(tab)] 'company-complete))
 
 (use-package lsp-java 
   :ensure t
@@ -90,6 +94,26 @@
 
 (use-package yasnippet :config (yas-global-mode))
 (use-package yasnippet-snippets :ensure t)
+
+
+(use-package company-dict
+  :ensure t
+  :init
+  (add-to-list 'company-backends 'company-dict))
+
+(use-package company-c-headers
+  :ensure t
+  :init
+  (add-to-list 'company-backends 'company-c-headers))
+
+(setq four-tab-gnu '("four-tab-gnu"
+                     "gnu"
+                     (indent-tabs-mode . nil)
+                     (c-basic-offset . 4)
+                     ))
+(add-to-list 'c-default-style '(c++-mode . "four-tab-gnu"))
+(add-to-list 'c-default-style '(c-mode . "four-tab-gnu"))
+(add-to-list 'c-default-style '(markdown-mode . "my-style"))
 
 (setenv "JAVA_HOME" "/usr/lib/jvm/java-19-openjdk/")
 
