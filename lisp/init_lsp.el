@@ -76,7 +76,7 @@
   (lsp-eldoc-enable-hover nil))          ;; disable eldoc hover
 
 (use-package cc-mode
-  :init
+  :config
   (define-key c-mode-map  [(tab)] 'company-complete)
   (define-key c++-mode-map  [(tab)] 'company-complete))
 
@@ -98,7 +98,7 @@
 
 (use-package company-dict
   :ensure t
-  :init
+  :config
   (add-to-list 'company-backends 'company-dict))
 
 (use-package company-c-headers
