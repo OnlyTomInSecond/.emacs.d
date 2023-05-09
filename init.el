@@ -36,6 +36,9 @@
   (quelpa-update-melpa-p nil)
   (quelpa-checkout-melpa-p nil))
 
+;; show line numbers
+(global-display-line-numbers-mode)
+
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
    (when (file-exists-p custom-file)
        (load custom-file))

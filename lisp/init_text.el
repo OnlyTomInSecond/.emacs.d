@@ -9,19 +9,7 @@
   :init
   :mode ("README\\(?:\\.md\\)?\\'" . gfm-mode)
   :hook (markdown-mode . visual-line-mode)
-  :bind (:map markdown-mode-style-map
-              ("r" . markdown-insert-ruby-tag)
-              ("d" . markdown-insert-details))
-  :config
-  (defun markdown-insert-ruby-tag (text ruby)
-    "Insert ruby tag with `TEXT' and `RUBY' quickly."
-    (interactive "sText: \nsRuby: \n")
-    (insert (format "<ruby>%s<rp>(</rp><rt>%s</rt><rp>)</rp></ruby>" text ruby)))
-
-  (defun markdown-insert-details (title)
-    "Insert details tag (collapsible) quickly."
-    (interactive "sTitle: ")
-    (insert (format "<details><summary>%s</summary>\n\n</details>" title)))
+  
   :custom
   (markdown-header-scaling t)
   (markdown-enable-wiki-links t)

@@ -4,13 +4,14 @@
   :when (display-graphic-p)
   :config
   (load-theme 'doom-one t)
+  (set-frame-font "Monospace 12" nil t)
   (doom-themes-org-config))
 
 (use-package emacs
   :ensure nil
+  :unless (display-graphic-p)
   :config
-  (setq display-line-numbers-type 't)
-  (global-display-line-numbers-mode t)
+  (load-theme 'tango-dark t)
   )
 
 (use-package help
