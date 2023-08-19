@@ -40,9 +40,9 @@
 (setq blink-cursor-mode nil)
 ;; Smooth scroll & friends
 (setq scroll-step 2
-      scroll-margin 2
+      scroll-margin 4
       hscroll-step 2
-      hscroll-margin 2
+      hscroll-margin 4
       scroll-conservatively 101
       scroll-preserve-screen-position 'always)
 
@@ -71,8 +71,8 @@
 (electric-pair-mode 1)
 
 ;; A simple frame title
-(setq frame-title-format '("%b - Emacs")
-      icon-title-format frame-title-format)
+;; (setq frame-title-format '("%b - Emacs")
+;;      icon-title-format frame-title-format)
 ;; Highlight parenthesises
 (use-package paren
   :ensure nil

@@ -3,16 +3,17 @@
   :hook (prog-mode . company-mode)
   :bind (
          :map company-mode-map
-              ([remap completion-at-point] . company-complete)
-              :map company-active-map
-              ("C-s"     . company-filter-candidates)
-              ([tab]     . company-complete-common-or-cycle)
-              ([backtab] . company-select-previous-or-abort))
+         ([remap completion-at-point] . company-complete)
+         :map company-active-map
+         ("C-s"     . company-filter-candidates)
+         ([tab]     . company-complete-common-or-cycle)
+         ([backtab] . company-select-previous-or-abort))
   :config
   (define-advice company-capf--candidates (:around (func &rest args))
     "Try default completion styles."
     (let ((completion-styles '(basic partial-completion)))
       (apply func args)))
+  
   :custom
   (company-idle-delay 0)
   ;; Easy navigation to candidates with M-<n>
@@ -37,6 +38,7 @@
   (company-format-margin-function nil)
   (company-backends '((company-capf :with company-tempo)
                       company-files
+                      company-c-headers
                       (company-dabbrev-code company-keywords)
                       company-dabbrev
                       ;; HACK: prevent `lsp-mode' to add `company-capf' back.
@@ -46,7 +48,6 @@
 (use-package lsp-mode
   :ensure t
   :hook (
-         (lsp-mode . lsp-enable-which-key-integration)
          (c-mode . lsp)
          (c++-mode . lsp)
          (java-mode . lsp)
@@ -76,11 +77,15 @@
   (lsp-eldoc-enable-hover nil))          ;; disable eldoc hover
 
 (use-package cc-mode
+  :ensure t
   :config
-  (define-key c-mode-map  [(tab)] 'company-complete)
-  (define-key c++-mode-map  [(tab)] 'company-complete))
-
-(use-package lsp-java 
+  (setq c-default-style '((java-mode . "java")
+                          (awk-mode . "awk")
+                          (other . "linux"))
+        )
+  (setq c-basic-offset 4)
+  )
+(use-package lsp-java
   :ensure t
   :config (add-hook 'java-mode-hook 'lsp)
   :custom
@@ -101,22 +106,23 @@
   :config
   (add-to-list 'company-backends 'company-dict))
 
-(use-package company-c-headers
+(use-package projectile
   :ensure t
   :init
-  (add-to-list 'company-backends 'company-c-headers))
+  (projectile-mode +1)
+  :bind (:map projectile-mode-map
+              ("s-p" . projectile-command-map)
+              ("C-c p" . projectile-command-map)))
 
-(setq four-tab-gnu '("four-tab-gnu"
-                     "gnu"
-                     (indent-tabs-mode . nil)
-                     (c-basic-offset . 4)
-                     ))
-(add-to-list 'c-default-style '(c++-mode . "four-tab-gnu"))
-(add-to-list 'c-default-style '(c-mode . "four-tab-gnu"))
-(add-to-list 'c-default-style '(markdown-mode . "my-style"))
+;;(setq four-tab-gnu '("four-tab-gnu"
+;;                     "gnu"
+;;                     (indent-tabs-mode . nil)
+;;                     (c-basic-offset . 4)
+;;                     ))
+;;(add-to-list 'c-default-style '(c++-mode . "four-tab-gnu"))
+;;(add-to-list 'c-default-style '(c-mode . "four-tab-gnu"))
+;;(add-to-list 'c-default-style '(markdown-mode . "my-style"))
 
-(setenv "JAVA_HOME" "/usr/lib/jvm/java-19-openjdk/")
+(setenv "JAVA_HOME" "/usr/lib/jvm/java-20-openjdk/")
 
 (provide 'init_lsp)
-
-

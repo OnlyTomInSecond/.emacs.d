@@ -12,11 +12,10 @@
     "C-x n" "narrow"
     "C-x t" "tab")
   :custom
-  (which-key-idle-delay 0.5)
-  (which-key-add-column-padding 1))
-
-(use-package magit
-  :ensure t
+  (which-key-idle-delay 2)
+  (which-key-show-early-on-C-h t)
+  (which-key-setup-side-window-bottom)
+  (which-key-add-column-padding 0)
   )
 
 (provide 'init_tools)

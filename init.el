@@ -40,8 +40,8 @@
 (global-display-line-numbers-mode)
 
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-   (when (file-exists-p custom-file)
-       (load custom-file))
+(when (file-exists-p custom-file)
+  (load custom-file))
 (add-to-list 'load-path "~/.emacs.d/lisp/" )
 ;;
 ;;====================
