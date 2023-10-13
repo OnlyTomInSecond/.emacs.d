@@ -1,6 +1,10 @@
 ;;;
 (use-package lsp-ivy
   :ensure t
+  :diminish ivy-mode
+  :hook (after-init . ivy-mode)
+  :custom
+  (ivy-use-selectable-prompt t)
   )
 (ivy-mode 1)
 (use-package counsel

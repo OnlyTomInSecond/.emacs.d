@@ -9,7 +9,7 @@
 (setq inhibit-splash-screen t)
 (menu-bar-mode 0)
 (tool-bar-mode 0)
-(scroll-bar-mode 0)
+;;(scroll-bar-mode 0)
 
 (setq window-resize-pixelwise t
       frame-resize-pixelwise t)
@@ -57,7 +57,7 @@
 
 (setq-default fill-column 80)
 ;; No tabs
-(setq-default indent-tabs-mode nil)
+;;(setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 ;; Sane defaults
 (setq use-short-answers t)

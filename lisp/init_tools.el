@@ -12,7 +12,7 @@
     "C-x n" "narrow"
     "C-x t" "tab")
   :custom
-  (which-key-idle-delay 2)
+  (which-key-idle-delay 1)
   (which-key-show-early-on-C-h t)
   (which-key-setup-side-window-bottom)
   (which-key-add-column-padding 0)

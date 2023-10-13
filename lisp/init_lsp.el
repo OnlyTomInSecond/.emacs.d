@@ -8,11 +8,6 @@
          ("C-s"     . company-filter-candidates)
          ([tab]     . company-complete-common-or-cycle)
          ([backtab] . company-select-previous-or-abort))
-  :config
-  (define-advice company-capf--candidates (:around (func &rest args))
-    "Try default completion styles."
-    (let ((completion-styles '(basic partial-completion)))
-      (apply func args)))
   
   :custom
   (company-idle-delay 0)
@@ -36,13 +31,14 @@
   (company-files-exclusions '(".git/" ".DS_Store"))
   ;; No icons
   (company-format-margin-function nil)
-  (company-backends '((company-capf :with company-tempo)
-                      company-files
-                      company-c-headers
-                      (company-dabbrev-code company-keywords)
-                      company-dabbrev
-                      ;; HACK: prevent `lsp-mode' to add `company-capf' back.
-                      company-capf)))
+;;  (company-backends '((company-capf :with company-tempo)
+;;                      company-files
+;;                      (company-dabbrev-code company-keywords)
+;;                      company-dabbrev)
+;;                    company-dict
+;;                    company-c-headers
+;;                    )
+  )
 
 ;; lsp-mode
 (use-package lsp-mode
@@ -52,17 +48,11 @@
          (c++-mode . lsp)
          (java-mode . lsp)
          )
-  :bind (:map lsp-mode-map
-              ("C-c f r" . lsp-format-region)
-		      ("C-c f b" . lsp-format-buffer)
-              ("C-c d" . lsp-describe-thing-at-point)
-              ("C-c a" . lsp-execute-code-action)
-              ("C-c r" . lsp-rename))
+
   :custom
-  (lsp-keymap-prefix "C-c l")
   (lsp-enable-links nil)                 ;; no clickable links
   (lsp-enable-folding nil)               ;; use `hideshow' instead
-  (lsp-enable-snippet nil)               ;; no snippets, it requires `yasnippet'
+  (lsp-enable-snippet t)                 ;; no snippets, it requires `yasnippet'
   (lsp-enable-file-watchers nil)         ;; performance matters
   (lsp-enable-text-document-color nil)   ;; as above
   (lsp-enable-symbol-highlighting nil)   ;; as above
@@ -73,6 +63,7 @@
   (lsp-modeline-diagnostics-enable nil)  ;; as above
   (lsp-log-io nil)                       ;; debug only
   (lsp-auto-guess-root t)                ;; Yes, I'm using projectile
+  (lsp-completion-provider :none)        ;; don't add `company-capf' to `company-backends'
   (lsp-keep-workspace-alive nil)         ;; auto kill lsp server
   (lsp-eldoc-enable-hover nil))          ;; disable eldoc hover
 
@@ -87,9 +78,19 @@
   )
 (use-package lsp-java
   :ensure t
-  :config (add-hook 'java-mode-hook 'lsp)
+  :hook (java-mode . lsp)
   :custom
   (lsp-java-completion-enabled t)
+  )
+
+(use-package clang-format
+  :ensure t
+  :bind (
+         ("C-c f b" . clang-format-buffer)
+         )
+  :custom
+  (clang-format-style "{BasedOnStyle: llvm, IndentWidth: 4}")
+  (clang-format-fallback-style "gnu")
   )
 
 (use-package flycheck
@@ -97,14 +98,24 @@
   :init (global-flycheck-mode)
   :hook (prog-mode . company-mode))
 
-(use-package yasnippet :config (yas-global-mode))
+(use-package yasnippet
+  :ensure t
+  :hook (prog-mode . yas-minor-mode)
+  )
 (use-package yasnippet-snippets :ensure t)
 
 
 (use-package company-dict
   :ensure t
   :config
-  (add-to-list 'company-backends 'company-dict))
+  (add-to-list 'company-backends 'company-dict)
+  )
+
+(use-package company-c-headers
+  :ensure t
+  :config
+  (add-to-list 'company-backends 'company-c-headers)
+  )
 
 (use-package projectile
   :ensure t
