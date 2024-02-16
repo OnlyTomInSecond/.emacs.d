@@ -3,7 +3,7 @@
   :ensure t
   :hook ((markdown-mode org-mode) . valign-mode))
 
-;; The markdown mode is awesome! unbeatable
+;; The markdown mode
 (use-package markdown-mode
   :ensure t
   :init

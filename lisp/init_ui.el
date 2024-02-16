@@ -23,18 +23,5 @@
  ;; If there is more than one, they won't work right.
  '(default ((t (:family "Monospace" :foundry "ADBO" :slant normal :weight normal :height 113 :width normal)))))
 
-;;(use-package emacs
-;;  :ensure nil
-;;  :unless (display-graphic-p)
-;;  :config
-;;  (load-theme 'tango-dark t)
-;;  )
-
-(use-package help
-  :ensure nil
-  :hook (after-init . temp-buffer-resize-mode)
-  :custom
-  (help-window-select t))
-
 ;;============================
 (provide 'init_ui)
