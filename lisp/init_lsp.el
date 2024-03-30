@@ -120,7 +120,7 @@
   :ensure t
 
   :custom
-  (ccls-executable "~/.emacs.d/ccls.sh")
+  (ccls-executable "~/.emacs.d//bin/ccls.sh")
   )
 
 (use-package cc-mode
