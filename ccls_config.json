@@ -1,0 +1,19 @@
+{
+  "cache": {
+    "directory": "/tmp/ccls-cache",
+    "format": "json",
+    "comments": 2,
+    "threads": 4
+  },
+  "index": {
+    "initialBlacklist": [
+      "/(clang|lld|llvm)/(test|unittests)/",
+      "/llvm/(bindings|examples|utils)/",
+      "/StaticAnalyzer/"
+    ]
+  },
+  "completion": {
+    "detailedLabel": true
+  }
+}
+

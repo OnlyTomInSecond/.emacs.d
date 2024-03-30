@@ -120,15 +120,7 @@
   :ensure t
 
   :custom
-  (ccls-executable "/usr/bin/ccls")
-  (ccls-initialization-options
-   '(
-	 :index (:comments 2
-			           :threads 2)
-	 :completion (:detailedLabel t)
-	 :cache (:directory "/tmp/ccls-cache")
-     )
-   )
+  (ccls-executable "~/.emacs.d/ccls.sh")
   )
 
 (use-package cc-mode
