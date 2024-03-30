@@ -36,8 +36,9 @@
   (quelpa-update-melpa-p nil)
   (quelpa-checkout-melpa-p nil))
 
-;; show line numbers
+;; show line numbers and column numbers
 (global-display-line-numbers-mode)
+(setq column-number-mode t)
 
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (when (file-exists-p custom-file)
@@ -55,7 +56,9 @@
 (require 'init_base)
 (require 'init_tools)
 (require 'init_ivy)
+
 ;;(require 'init_ggtags)
+
 (require 'init_lsp)
 (require 'init_text)
 (require 'init_etags)
