@@ -11,12 +11,9 @@
          ([backtab] . company-select-previous-or-abort))
 
   :custom
-  (company-backends '((company-capf company-dabbrev
-									company-dabbrev-code company-egats company-keywords)
-                      company-cmake
-                      (company-files company-dict)
-                      company-abbrev
-                      company-ispell)
+  (company-backends '(company-bbdb company-semantic company-cmake company-capf company-clang company-files
+              (company-dabbrev-code company-etags company-keywords)
+              company-oddmuse company-dabbrev)
                     )
   (company-idle-delay 0.0)
   ;; Easy navigation to candidates with M-<n>
@@ -48,19 +45,12 @@
   :hook (((c-mode c++-mode) . (lambda ()
                                 (add-to-list 'company-backends 'company-c-headers t)))
          (c++-mode . (lambda ()
-                       (add-to-list 'company-c-headers-path-system "/usr/include/c++/13.2.1/")))
+                       (add-to-list 'company-c-headers-path-system "/usr/include/c++/13.2.1/")
+					   ;; For termux
+					   (add-to-list 'company-c-headers-path-system "~/../usr/include/c++/v1/")
+					   ))
          )
   )
-
-;;(use-package company-elisp
-;;  :after (company)
-;;  )
-
-;; Add `company-elisp' backend for elisp.
-;;(add-hook 'emacs-lisp-mode-hook
-;;          #'(lambda ()
-;;              (require 'company-elisp)
-;;              (push 'company-elisp company-backends)))
 
 ;; lsp-mode
 (use-package lsp-mode
@@ -120,7 +110,7 @@
   :ensure t
 
   :custom
-  (ccls-executable "~/.emacs.d//bin/ccls.sh")
+  (ccls-executable "~/.emacs.d/bin/ccls.sh")
   )
 
 (use-package cc-mode
@@ -157,20 +147,6 @@
          ("C-M-\\" . format-all-buffer)
          )
   )
-
-;; For C/C++
-;;(use-package clang-format
-;;  :ensure t
-;;  :bind (
-;;         ("C-c f b" . clang-format-buffer)
-;;         ("C-c f r" . clang-format-region)
-;;         )
-;;  :custom
-;;  (clang-format-style "{BasedOnStyle: llvm, IndentWidth: 4}")
-;;  (clang-format-fallback-style "gnu")
-;;  )
-
-;; For python
 
 (use-package flycheck
   :ensure t

@@ -94,8 +94,8 @@
 (electric-pair-mode 1)
 
 ;; A simple frame title
-;; (setq frame-title-format '("%b - Emacs")
-;;      icon-title-format frame-title-format)
+(setq frame-title-format '("%b - Emacs")
+      icon-title-format frame-title-format)
 ;; Highlight parenthesises
 (use-package paren
   :ensure nil
