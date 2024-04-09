@@ -1,6 +1,5 @@
 {
   "cache": {
-    "directory": "/tmp/ccls-cache",
     "format": "json",
     "comments": 2,
     "threads": 4

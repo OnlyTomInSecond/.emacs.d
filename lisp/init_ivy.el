@@ -1,11 +1,11 @@
 ;;;
-(use-package lsp-ivy
-  :ensure t
-  :diminish ivy-mode
-  :hook (after-init . ivy-mode)
-  :custom
-  (ivy-use-selectable-prompt t)
-  )
+;; (use-package lsp-ivy
+;;   :ensure t
+;;   :diminish ivy-mode
+;;   :hook (after-init . ivy-mode)
+;;   :custom
+;;   (ivy-use-selectable-prompt t)
+;;   )
 (ivy-mode 1)
 
 (use-package counsel
@@ -13,8 +13,9 @@
   :hook (after-init . counsel-mode)
 
   :custom
-  (ivy-use-virtual-buffers t)
+  ;;(ivy-use-virtual-buffers t) ;; For recent file
   (ivy-count-format "%d/%d ")
+  ;;(ivy-use-selectable-prompt t)
 
   :bind (
           ;;Ivy-based interface to standard commands
@@ -32,27 +33,30 @@
           ("C-c v" . ivy-push-view)
           ("C-c V" . ivy-pop-view)
           ;;Ivy-based interface to shell and system tools
-          ;;("C-c c" . counsel-compile)
-          ;;("C-c g" . counsel-git)
-          ;;("C-c j" . counsel-git-grep)
-          ;;("C-c L" . counsel-git-log)
-          ;;("C-c k" . counsel-rg)
-          ;;("C-c m" . counsel-linux-app)
-          ;;("C-c n" . counsel-fzf)
-          ;;("C-x l" . counsel-locate)
-          ;;("C-c J" . counsel-file-jump)
-          ;;("C-S-o" . counsel-rhythmbox)
-          ;;("C-c w" . counsel-wmctrl)
+          ("C-c c" . counsel-compile)
+          ("C-c g" . counsel-git)
+          ("C-c j" . counsel-git-grep)
+          ("C-c L" . counsel-git-log)
+          ("C-c k" . counsel-rg)
+          ("C-c m" . counsel-linux-app)
+          ("C-c n" . counsel-fzf)
+          ("C-x l" . counsel-locate)
+          ("C-c J" . counsel-file-jump)
+          ("C-S-o" . counsel-rhythmbox)
+          ("C-c w" . counsel-wmctrl)
           ;;Ivy-resume and other commands
-          ;;("C-c C-r" . ivy-resume)
-          ;;("C-c b" . counsel-bookmark)
-          ;;("C-c d" . counsel-descbinds)
-          ;;("C-c g" . counsel-git)
-          ;;("C-c o" . counsel-outline)
-          ;;("C-c t" . counsel-load-theme)
-          ;;("C-c F" . counsel-org-file)
+          ("C-c C-r" . ivy-resume)
+          ("C-c b" . counsel-bookmark)
+          ("C-c d" . counsel-descbinds)
+          ("C-c g" . counsel-git)
+          ("C-c o" . counsel-outline)
+          ("C-c t" . counsel-load-theme)
+          ("C-c F" . counsel-org-file)
           )
   )
 
+(use-package smex
+  :ensure t
+  )
 
 (provide 'init_ivy)
