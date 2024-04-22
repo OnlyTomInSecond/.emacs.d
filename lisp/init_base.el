@@ -21,10 +21,12 @@
       frame-resize-pixelwise t)
 
 ;; Linux specific
-(setq x-gtk-use-system-tooltips nil
-      x-underline-at-descent-line t)
+;;(setq x-gtk-use-system-tooltips t
+;;      x-underline-at-descent-line t)
 
-;; Optimize for very long lines
+;; No ToolTip under mouse, just display in minibuffer
+(tooltip-mode -1)
+;; Change text direction to "left-to-right"
 (setq bidi-paragraph-direction 'left-to-right
       bidi-inhibit-bpa t)
 
@@ -110,22 +112,22 @@
   (sentence-end-double-space nil))
 
 (use-package minibuffer
-  :bind (:map minibuffer-local-map
-              ([escape] . abort-recursive-edit)
-              :map minibuffer-local-ns-map
-              ([escape] . abort-recursive-edit)
-              :map minibuffer-local-completion-map
-              ([escape] . abort-recursive-edit)
-              :map minibuffer-local-must-match-map
-              ([escape] . abort-recursive-edit)
-              :map minibuffer-local-isearch-map
-              ([escape] . abort-recursive-edit))
+  ;; :bind (:map minibuffer-local-map
+  ;;             ([escape] . abort-recursive-edit)
+  ;;             :map minibuffer-local-ns-map
+  ;;             ([escape] . abort-recursive-edit)
+  ;;             :map minibuffer-local-completion-map
+  ;;             ([escape] . abort-recursive-edit)
+  ;;             :map minibuffer-local-must-match-map
+  ;;             ([escape] . abort-recursive-edit)
+  ;;             :map minibuffer-local-isearch-map
+  ;;             ([escape] . abort-recursive-edit))
   :custom
   (completion-auto-help t)
   (completion-show-help nil)
   ;; Cycle completions regardless of the count
   (completion-cycle-threshold t)
-  (enable-recursive-minibuffers t)
+  ;;(enable-recursive-minibuffers t)
   (minibuffer-depth-indicate-mode t)
   (minibuffer-eldef-shorten-default t)
   (minibuffer-electric-default-mode t)
@@ -145,6 +147,14 @@
 ;; Set language environment to UTF-8
 (set-language-environment "UTF-8")
 (set-default-coding-systems 'utf-8)
+
+;; Settings for exec-path-from-shell
+;; fix the PATH environment variable issue
+(use-package exec-path-from-shell
+  :ensure t
+  :when (or (memq window-system '(mac ns x))
+            )
+  :init (exec-path-from-shell-initialize))
 
 (provide 'init_base)
 ;;; init_base.el ends here

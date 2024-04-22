@@ -6,7 +6,6 @@
 ;;   :custom
 ;;   (ivy-use-selectable-prompt t)
 ;;   )
-(ivy-mode 1)
 
 (use-package counsel
   :ensure t
@@ -58,5 +57,7 @@
 (use-package smex
   :ensure t
   )
+
+(ivy-mode 1)
 
 (provide 'init_ivy)

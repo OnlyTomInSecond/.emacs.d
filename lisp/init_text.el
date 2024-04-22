@@ -1,3 +1,6 @@
+;; Enable visual-line-mode
+(global-visual-line-mode 1)
+
 ;; Pixel alignment for org/markdown tables
 (use-package valign
   :ensure t

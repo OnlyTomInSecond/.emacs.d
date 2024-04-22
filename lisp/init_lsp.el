@@ -1,20 +1,22 @@
 ;;; configuration for company mode and lsp
 (use-package company
   :ensure t
-  :config (global-company-mode)
-  :bind (
-         ;; :map company-mode-map
-         ;;([remap completion-at-point] . company-complete)
-         :map company-active-map
-         ("C-s"     . company-filter-candidates)
-         ([tab]     . company-complete-common-or-cycle)
-         ([backtab] . company-select-previous-or-abort))
+  :defer t
+  :hook (after-init . global-company-mode)
+  ;; :bind (
+  ;;        :map company-mode-map
+  ;;        ([remap completion-at-point] . company-complete)
+  ;;        :map company-active-map
+  ;;        ;;("C-s"     . company-filter-candidates)
+  ;;        ([tab]     . company-complete-common-or-cycle)
+  ;;        ([backtab] . company-select-previous-or-abort)
+  ;;        )
 
   :custom
-  ;; (company-backends '(company-capf company-bbdb company-semantic
-  ;;                                  company-cmake company-files
-  ;;                                  (company-dabbrev-code company-etags company-keywords)
-  ;;                                  company-oddmuse company-dabbrev)
+  ;; (company-backends '(company-capf
+  ;;                     (company-dabbrev-code company-etags company-keywords company-files)
+  ;;                     (company-dabbrev company-abbrev company-dict)
+  ;;                     )
   ;;                   )
   (company-idle-delay 0.0)
   ;; Easy navigation to candidates with M-<n>
@@ -22,17 +24,17 @@
   (company-require-match nil)
   (company-minimum-prefix-length 3)
   (company-selection-wrap-around t)
-  ;;(company-tooltip-width-grow-only t)
+  (company-tooltip-width-grow-only t)
   (company-tooltip-align-annotations t)
   ;; complete `abbrev' only in current buffer and make dabbrev case-sensitive
-  (company-dabbrev-other-buffers t)
-  (company-dabbrev-ignore-case nil)
-  (company-dabbrev-downcase nil)
+  ;; (company-dabbrev-other-buffers nil)
+  ;;(company-dabbrev-ignore-case nil)
+  ;; (company-dabbrev-downcase nil)
   ;; make dabbrev-code not case-sensitive
-  (company-dabbrev-code-ignore-case t)
-  (company-dabbrev-code-everywhere t)
+  ;;(company-dabbrev-code-ignore-case t)
+  ;; (company-dabbrev-code-everywhere t)
   ;; call `tempo-expand-if-complete' after completion
-  ;;(company-tempo-expand t)
+  (company-tempo-expand t)
   ;; Ignore uninteresting files. Items end with a slash are recognized as
   ;; directories.
   (company-files-exclusions '(".git/" ".DS_Store"))
@@ -40,18 +42,18 @@
   (company-format-margin-function nil)
   )
 
-(use-package company-c-headers
-  :ensure t
-  :after (company)
-  :hook (((c-mode c++-mode) . (lambda ()
-                                (add-to-list 'company-backends 'company-c-headers t)))
-         (c++-mode . (lambda ()
-                       (add-to-list 'company-c-headers-path-system "/usr/include/c++/13.2.1/")
-                       ;; For termux
-                       ;; (add-to-list 'company-c-headers-path-system "~/../usr/include/c++/v1/")
-                       ))
-         )
-  )
+;; (use-package company-c-headers
+;;   :ensure t
+;;   :after (company)
+;;   :hook (((c-mode c++-mode) . (lambda ()
+;;                                 (add-to-list 'company-backends 'company-c-headers t)))
+;;          (c++-mode . (lambda ()
+;;                        (add-to-list 'company-c-headers-path-system "/usr/include/c++/13.2.1/")
+;;                        ;; For termux
+;;                        ;; (add-to-list 'company-c-headers-path-system "~/../usr/include/c++/v1/")
+;;                        ))
+;;          )
+;;   )
 ;; ==============================================================================
 ;; lsp-mode
 ;; (use-package lsp-mode
@@ -59,7 +61,7 @@
 ;;   :config
 ;;   ;; set lsp-mode keymap
 ;;   (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
-;;
+
 ;;   :hook (
 ;;          ;; replace XXX-mode with concrete major-mode(e. g. python-mode)
 ;;          (c-mode)
@@ -72,7 +74,7 @@
 ;;          (lsp-mode . lsp-enable-which-key-integration)
 ;;          )
 ;;   :commands lsp
-;;
+
 ;;   :custom
 ;;   (lsp-enable-links nil)                    ;; no clickable links
 ;;   (lsp-enable-folding nil)                  ;; use `hideshow' instead
@@ -92,7 +94,7 @@
 ;;   (lsp-eldoc-enable-hover nil)              ;; disable eldoc hover
 ;;   (lsp-lens-enable nil)                     ;; disable lenses
 ;;   )
-;;
+
 ;; ;; optionally
 ;; (use-package lsp-ui
 ;;   :ensure t
@@ -101,10 +103,10 @@
 ;;   (lsp-ui-sideline-enable nil)              ;;disable sideline
 ;;   (lsp-ui-sideline-show-hover nil)          ;;don't show hover messages in sideline
 ;;   )
-;;
+
 ;; ;; if you are ivy user
 ;; (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
-;;(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+;; (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
 ;; ======================================================================
 
 ;; eglot
@@ -118,21 +120,21 @@
 
   :config
   (add-to-list 'eglot-server-programs
-               '((c-mode c-ts-mode c++-mode c++-ts-mode c-or-c++-mode c-or-c++-ts-mode)
+               '((c-mode c++-mode c-or-c++-mode)
                  . ("~/.emacs.d/bin/ccls.sh"))
                )
+  ;; (setq eglot-stay-out-of '(company))
   )
 
 ;; ts-mode
 ;; (use-package treesit
-;;   :when (and (fboundp 'treesit-available-p) (treesit-available-p))
+;;   ;;:when (and (fboundp 'treesit-available-p) (treesit-available-p))
 ;;   ;;:mode (("\\(?:Dockerfile\\(?:\\..*\\)?\\|\\.[Dd]ockerfile\\)\\'" . dockerfile-ts-mode)
 ;;   ;;("\\.go\\'" . go-ts-mode)
 ;;   ;;("/go\\.mod\\'" . go-mod-ts-mode)
 ;;   ;;("\\.rs\\'" . rust-ts-mode)
 ;;   ;;("\\.ts\\'" . typescript-ts-mode)
 ;;   ;;("\\.y[a]?ml\\'" . yaml-ts-mode))
-;;   :config (setq treesit-font-lock-level 4)
 ;;   :init
 ;;   (setq major-mode-remap-alist
 ;;         '(
@@ -142,16 +144,21 @@
 ;;           (c-or-c++-mode . c-or-c++-ts-mode)
 ;;           ;;(css-mode . css-ts-mode)
 ;;           ;;(js-mode . js-ts-mode)
-;;           (java-mode . java-ts-mode)
+;;           ;;(java-mode . java-ts-mode)
 ;;           ;;(js-json-mode . json-ts-mode)
 ;;           (makefile-mode . cmake-ts-mode)
 ;;           (python-mode . python-ts-mode)
 ;;           ;;(ruby-mode . ruby-ts-mode)
 ;;           ;;(conf-toml-mode . toml-ts-mode)
-;;           (elisp-mode . elisp-ts-mode)
+;;           ;; (elisp-mode . elisp-ts-mode)
 ;;           (cmake-mode . cmake-ts-mode)
 ;;           ))
-;;   (setq treesit-language-source-alist
+;;   :config
+;;   (setq treesit-font-lock-level 3)
+;;   (setq c-ts-mode-indent-style nil)
+
+;;   :custom
+;;   (treesit-language-source-alist
 ;;         '((bash       . ("https://github.com/tree-sitter/tree-sitter-bash"))
 ;;           (c          . ("https://github.com/tree-sitter/tree-sitter-c"))
 ;;           (cpp        . ("https://github.com/tree-sitter/tree-sitter-cpp"))
@@ -163,7 +170,7 @@
 ;;           ;;(go         . ("https://github.com/tree-sitter/tree-sitter-go"))
 ;;           ;;(gomod      . ("https://github.com/camdencheek/tree-sitter-go-mod.git"))
 ;;           ;;(html       . ("https://github.com/tree-sitter/tree-sitter-html"))
-;;           (java       . ("https://github.com/tree-sitter/tree-sitter-java.git"))
+;;           ;;(java       . ("https://github.com/tree-sitter/tree-sitter-java.git"))
 ;;           ;;(javascript . ("https://github.com/tree-sitter/tree-sitter-javascript"))
 ;;           ;;(json       . ("https://github.com/tree-sitter/tree-sitter-json"))
 ;;           ;;(lua        . ("https://github.com/Azganoth/tree-sitter-lua"))
@@ -186,12 +193,12 @@
 ;;   )
 
 ;; ccls
-;;(use-package ccls
-;;  :ensure t
-;;
-;;  :custom
-;;  (ccls-executable "~/.emacs.d/bin/ccls.sh")
-;;  )
+;; (use-package ccls
+;;   :ensure t
+
+;;   :custom
+;;   (ccls-executable "~/.emacs.d/bin/ccls.sh")
+;;   )
 
 (use-package cc-mode
   ;;:ensure t
@@ -218,9 +225,10 @@
                 '(
                   ("C" (clang-format "--style={BasedOnStyle: llvm, IndentWidth: 4, TabWidth: 4}"))
                   ("C++" (clang-format "--style={BasedOnStyle: llvm, IndentWidth: 4, TabWidth: 4}"))
-                  ("Python" (yapf "--style" "google"))
-                  ("Shell" (shfmt "-i" "4" "-ci"))
+                  ("Python" (yapf "--style google"))
+                  ("Shell" (shfmt "-i 4 -ci"))
                   ("Java" (astyle "--mode=java"))
+                  ;;("JavaScript" (prettier))
                   )
                 )
   :bind (
@@ -230,9 +238,12 @@
 
 ;; (use-package flycheck
 ;;   :ensure t
-;;   :after (company)
 ;;   :hook (prog-mode . flycheck-mode)
 ;;   )
+
+;; flymake shotkeys
+(global-set-key (kbd "M-n") #'flymake-goto-next-error)
+(global-set-key (kbd "M-p") #'flymake-goto-prev-error)
 
 (use-package yasnippet
   :ensure t
@@ -245,9 +256,9 @@
   )
 
 
-(use-package company-dict
-  :ensure t
-  )
+;; (use-package company-dict
+;;   :ensure t
+;;   )
 
 (use-package projectile
   :ensure t

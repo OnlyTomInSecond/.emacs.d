@@ -1,6 +1,6 @@
 {
   "cache": {
-    "format": "json",
+    "directory": "/tmp/ccls-cache",
     "comments": 2,
     "threads": 4
   },
@@ -11,8 +11,5 @@
       "/StaticAnalyzer/"
     ]
   },
-  "completion": {
-    "detailedLabel": true
-  }
+  "completion": { "detailedLabel": true, "filterAndSort": false }
 }
-
