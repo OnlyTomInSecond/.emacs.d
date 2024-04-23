@@ -1,15 +1,105 @@
 {
+  "compilationDatabaseCommand": "",
+  "compilationDatabaseDirectory": "",
   "cache": {
     "directory": "/tmp/ccls-cache",
-    "comments": 2,
-    "threads": 4
+    "format": "binary",
+    "hierarchicalPath": false,
+    "retainInMemory": 2
+  },
+  "capabilities": {
+    "documentOnTypeFormattingProvider": {
+      "firstTriggerCharacter": "}",
+      "moreTriggerCharacter": []
+    },
+    "foldingRangeProvider": true,
+    "workspace": {
+      "workspaceFolders": {
+        "supported": true,
+        "changeNotifications": true
+      }
+    }
+  },
+  "clang": {
+    "excludeArgs": [],
+    "extraArgs": [],
+    "pathMappings": [],
+    "resourceDir": ""
+  },
+  "client": {
+    "diagnosticsRelatedInformation": true,
+    "hierarchicalDocumentSymbolSupport": true,
+    "linkSupport": true,
+    "snippetSupport": true
+  },
+  "codeLens": {
+    "localVariables": true
+  },
+  "completion": {
+    "caseSensitivity": 2,
+    "detailedLabel": true,
+    "dropOldRequests": true,
+    "duplicateOptional": true,
+    "filterAndSort": true,
+    "include": {
+      "blacklist": [],
+      "maxPathSize": 30,
+      "suffixWhitelist": [
+        ".h",
+        ".hpp",
+        ".hh",
+        ".inc"
+      ],
+      "whitelist": []
+    },
+    "maxNum": 25,
+    "placeholder": false
+  },
+  "diagnostics": {
+    "blacklist": [],
+    "onChange": 1000,
+    "onOpen": 0,
+    "onSave": 0,
+    "spellChecking": true,
+    "whitelist": []
+  },
+  "highlight": {
+    "largeFileSize": 2097152,
+    "lsRanges": false,
+    "blacklist": [],
+    "whitelist": []
   },
   "index": {
-    "initialBlacklist": [
-      "/(clang|lld|llvm)/(test|unittests)/",
-      "/llvm/(bindings|examples|utils)/",
-      "/StaticAnalyzer/"
-    ]
+    "blacklist": [],
+    "comments": 2,
+    "initialNoLinkage": false,
+    "initialBlacklist": [],
+    "initialWhitelist": [],
+    "maxInitializerLines": 5,
+    "multiVersion": 0,
+    "multiVersionBlacklist": [],
+    "multiVersionWhitelist": [],
+    "name": {
+      "suppressUnwrittenScope": false
+    },
+    "onChange": false,
+    "parametersInDeclarations": true,
+    "threads": 4,
+    "trackDependency": 2,
+    "whitelist": []
   },
-  "completion": { "detailedLabel": true, "filterAndSort": false }
+  "request": {
+    "timeout": 5000
+  },
+  "session": {
+    "maxNum": 10
+  },
+  "workspaceSymbol": {
+    "caseSensitivity": 1,
+    "maxNum": 1000,
+    "sort": true
+  },
+  "xref": {
+    "maxNum": 2000
+  }
 }

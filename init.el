@@ -21,6 +21,9 @@
 (eval-when-compile
   (require 'use-package))
 
+;; I wanna newer packages.
+(setq package-install-upgrade-built-in t)
+
 ;; Keep ~/.emacs.d/ clean.
 (use-package no-littering
   :ensure t

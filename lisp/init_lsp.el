@@ -21,11 +21,11 @@
   (company-idle-delay 0.0)
   ;; Easy navigation to candidates with M-<n>
   (company-show-quick-access t)
-  (company-require-match nil)
+  ;; (company-require-match nil)
   (company-minimum-prefix-length 3)
-  (company-selection-wrap-around t)
-  (company-tooltip-width-grow-only t)
-  (company-tooltip-align-annotations t)
+  ;; (company-selection-wrap-around t)
+  ;; (company-tooltip-width-grow-only t)
+  ;; (company-tooltip-align-annotations t)
   ;; complete `abbrev' only in current buffer and make dabbrev case-sensitive
   ;; (company-dabbrev-other-buffers nil)
   ;;(company-dabbrev-ignore-case nil)
@@ -34,7 +34,7 @@
   ;;(company-dabbrev-code-ignore-case t)
   ;; (company-dabbrev-code-everywhere t)
   ;; call `tempo-expand-if-complete' after completion
-  (company-tempo-expand t)
+  ;; (company-tempo-expand t)
   ;; Ignore uninteresting files. Items end with a slash are recognized as
   ;; directories.
   (company-files-exclusions '(".git/" ".DS_Store"))
@@ -113,6 +113,7 @@
 ;; Language Server (eglot - builtin since v29)
 (use-package eglot
   ;;:bind ("C-c e f" . eglot-format)
+  :ensure t
   :init
   (add-hook 'prog-mode-hook
 	        (lambda () (unless (member major-mode '(emacs-lisp-mode))
@@ -260,15 +261,15 @@
 ;;   :ensure t
 ;;   )
 
-(use-package projectile
-  :ensure t
-  :init
-  (projectile-mode 1)
-  :bind (:map projectile-mode-map
-              ;;("s-p" . projectile-command-map)
-              ("C-c p" . projectile-command-map))
-  :custom
-  (projectile-completion-system 'ivy)
-  )
+;; (use-package projectile
+;;   :ensure t
+;;   :init
+;;   (projectile-mode 1)
+;;   :bind (:map projectile-mode-map
+;;               ;;("s-p" . projectile-command-map)
+;;               ("C-c p" . projectile-command-map))
+;;   :custom
+;;   (projectile-completion-system 'ivy)
+;;   )
 (provide 'init_lsp)
 ;;; init_lsp.el ends here
