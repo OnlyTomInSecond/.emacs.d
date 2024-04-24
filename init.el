@@ -1,22 +1,19 @@
-(setq gc-cons-threshold most-positive-fixnum
-      gc-cons-percentage 0.6)
-
 ;;config the elpa mirror in China
 (require 'package)
 (setq package-archives '(("gnu"    . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
                          ("nongnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")
                          ("melpa"  . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
-(package-initialize) ;; You might already have this line
+;;(package-initialize) ;; You might already have this line
 
 ;; Bootstrap `use-package'
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
 (eval-and-compile
-  (setq use-package-always-ensure nil)
+  ;; (setq use-package-always-ensure nil)
   (setq use-package-always-defer nil)
   (setq use-package-always-demand nil)
-  (setq use-package-expand-minimally nil)
+  ;; (setq use-package-expand-minimally nil)
   (setq use-package-enable-imenu-support t))
 (eval-when-compile
   (require 'use-package))
@@ -40,8 +37,8 @@
   (quelpa-checkout-melpa-p nil))
 
 ;; show line numbers and column numbers
-(global-display-line-numbers-mode)
-(setq column-number-mode t)
+(global-display-line-numbers-mode 1)
+(column-number-mode 1)
 
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (when (file-exists-p custom-file)
@@ -55,12 +52,22 @@
 ;;                           ("https" . "127.0.0.1:9080")
 ;;                           ))
 
-(require 'init_ui)
 (require 'init_base)
-(require 'init_tools)
+(require 'init_ui)
 (require 'init_ivy)
+(require 'init_tools)
 ;;(require 'init_ggtags)
 (require 'init_lsp)
+;;(require 'init_etags)
 (require 'init_text)
-(require 'init_etags)
 
+;; Use a hook so the message doesn't get clobbered by other messages.
+(add-hook 'emacs-startup-hook
+    (lambda ()
+        (message "Emacs ready in %s with %d garbage collections."
+            (format "%.2f seconds"
+                (float-time
+                    (time-subtract after-init-time before-init-time)))
+        gcs-done)))
+
+;; (setq gc-cons-threshold (* 10 1024 1024))

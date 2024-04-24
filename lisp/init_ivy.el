@@ -1,15 +1,8 @@
-;;;
-;; (use-package lsp-ivy
-;;   :ensure t
-;;   :diminish ivy-mode
-;;   :hook (after-init . ivy-mode)
-;;   :custom
-;;   (ivy-use-selectable-prompt t)
-;;   )
-
 (use-package counsel
   :ensure t
+  :defer t
   :hook (after-init . counsel-mode)
+  :config (ivy-mode 1)
 
   :custom
   ;;(ivy-use-virtual-buffers t) ;; For recent file
@@ -56,8 +49,8 @@
 
 (use-package smex
   :ensure t
+  :defer t
+  :after (counsel)
   )
-
-(ivy-mode 1)
 
 (provide 'init_ivy)

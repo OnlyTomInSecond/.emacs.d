@@ -1,6 +1,3 @@
-;; Enable visual-line-mode
-(global-visual-line-mode 1)
-
 ;; Pixel alignment for org/markdown tables
 (use-package valign
   :ensure t
@@ -9,7 +6,6 @@
 ;; The markdown mode
 (use-package markdown-mode
   :ensure t
-  :init
   :mode ("README\\(?:\\.md\\)?\\'" . gfm-mode)
   :hook (markdown-mode . visual-line-mode)
   

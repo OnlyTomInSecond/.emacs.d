@@ -2,7 +2,7 @@
 (use-package company
   :ensure t
   :defer t
-  :hook (after-init . global-company-mode)
+  :hook (prog-mode . company-mode)
   ;; :bind (
   ;;        :map company-mode-map
   ;;        ([remap completion-at-point] . company-complete)
@@ -24,8 +24,8 @@
   ;; (company-require-match nil)
   (company-minimum-prefix-length 3)
   ;; (company-selection-wrap-around t)
-  ;; (company-tooltip-width-grow-only t)
-  ;; (company-tooltip-align-annotations t)
+  (company-tooltip-width-grow-only t)
+  (company-tooltip-align-annotations t)
   ;; complete `abbrev' only in current buffer and make dabbrev case-sensitive
   ;; (company-dabbrev-other-buffers nil)
   ;;(company-dabbrev-ignore-case nil)
@@ -114,10 +114,13 @@
 (use-package eglot
   ;;:bind ("C-c e f" . eglot-format)
   :ensure t
+  :defer t
   :init
   (add-hook 'prog-mode-hook
 	        (lambda () (unless (member major-mode '(emacs-lisp-mode))
 			             (eglot-ensure))))
+
+  :after (company)
 
   :config
   (add-to-list 'eglot-server-programs
@@ -211,6 +214,11 @@
   (setq c-basic-offset 4)
   )
 
+;; Enable Code Folding
+(use-package hideshow
+  :defer t
+  :hook (prog-mode . hs-minor-mode)
+)
 ;; (use-package cmake-mode
 ;;   :ensure t
 ;;   )
@@ -219,6 +227,7 @@
 ;; This needs clang-format,yapf(python),shfmt,astyle installed
 (use-package format-all
   :ensure t
+  :defer t
   :commands format-all-mode
   :hook (prog-mode . format-all-mode)
   :config
@@ -248,12 +257,14 @@
 
 (use-package yasnippet
   :ensure t
+  :defer t
   :after (company)
   :hook (prog-mode . yas-minor-mode)
   )
 
 (use-package yasnippet-snippets
   :ensure t
+  :defer t
   )
 
 

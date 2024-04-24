@@ -1,6 +1,14 @@
 ;;; init_base
 ;;; Code:
 
+;; Settings for exec-path-from-shell
+;; fix the PATH environment variable issue
+(use-package exec-path-from-shell
+  :ensure t
+  :when (or (memq window-system '(mac ns x))
+            )
+  :init (exec-path-from-shell-initialize))
+
 (setq inhibit-x-resources t
       inhibit-default-init t
       inhibit-startup-screen t
@@ -79,6 +87,7 @@
 ;; move-dup, move/copy line or region
 (use-package move-dup
   :ensure t
+  :defer t
   :hook (after-init . global-move-dup-mode))
 
 (electric-pair-mode 1)
@@ -90,6 +99,7 @@
 ;; Highlight parenthesises
 (use-package paren
   :ensure nil
+  :defer t
   :hook (after-init . show-paren-mode)
   :custom
   (show-paren-when-point-inside-paren t)
@@ -99,11 +109,13 @@
 ;; Highlight current line in GUI
 (use-package hl-line
   :ensure nil
+  :defer t
   :when (display-graphic-p)
   :hook (after-init . global-hl-line-mode))
 
 (use-package text-mode
   :ensure nil
+  :defer t
   :custom
   ;; better word wrapping for CJK characters
   (word-wrap-by-category t)
@@ -148,13 +160,9 @@
 (set-language-environment "UTF-8")
 (set-default-coding-systems 'utf-8)
 
-;; Settings for exec-path-from-shell
-;; fix the PATH environment variable issue
-(use-package exec-path-from-shell
-  :ensure t
-  :when (or (memq window-system '(mac ns x))
-            )
-  :init (exec-path-from-shell-initialize))
+
+;; Enable visual-line-mode
+(global-visual-line-mode)
 
 (provide 'init_base)
 ;;; init_base.el ends here
