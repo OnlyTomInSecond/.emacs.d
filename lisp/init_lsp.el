@@ -2,7 +2,7 @@
 (use-package company
   :ensure t
   :defer t
-  :hook (prog-mode . company-mode)
+  :hook (prog-mode . global-company-mode)
   ;; :bind (
   ;;        :map company-mode-map
   ;;        ([remap completion-at-point] . company-complete)
@@ -13,11 +13,11 @@
   ;;        )
 
   :custom
-  ;; (company-backends '(company-capf
-  ;;                     (company-dabbrev-code company-etags company-keywords company-files)
-  ;;                     (company-dabbrev company-abbrev company-dict)
-  ;;                     )
-  ;;                   )
+  (company-backends '(company-capf
+                      (company-dabbrev-code company-dabbrev company-abbrev company-etags company-keywords company-files)
+                      company-cmake
+                      )
+                    )
   (company-idle-delay 0.0)
   ;; Easy navigation to candidates with M-<n>
   (company-show-quick-access t)
@@ -117,7 +117,7 @@
   :defer t
   :init
   (add-hook 'prog-mode-hook
-	        (lambda () (unless (member major-mode '(emacs-lisp-mode))
+	        (lambda () (unless (member major-mode '(emacs-lisp-mode cmake-mode))
 			             (eglot-ensure))))
 
   :after (company)
@@ -127,7 +127,7 @@
                '((c-mode c++-mode c-or-c++-mode)
                  . ("~/.emacs.d/bin/ccls.sh"))
                )
-  ;; (setq eglot-stay-out-of '(company))
+  (setq eglot-stay-out-of '(company))
   )
 
 ;; ts-mode
@@ -218,10 +218,11 @@
 (use-package hideshow
   :defer t
   :hook (prog-mode . hs-minor-mode)
-)
-;; (use-package cmake-mode
-;;   :ensure t
-;;   )
+  )
+(use-package cmake-mode
+  :ensure t
+  :defer t
+  )
 
 ;; Code format ============================
 ;; This needs clang-format,yapf(python),shfmt,astyle installed
@@ -258,7 +259,6 @@
 (use-package yasnippet
   :ensure t
   :defer t
-  :after (company)
   :hook (prog-mode . yas-minor-mode)
   )
 
@@ -272,15 +272,15 @@
 ;;   :ensure t
 ;;   )
 
-;; (use-package projectile
-;;   :ensure t
-;;   :init
-;;   (projectile-mode 1)
-;;   :bind (:map projectile-mode-map
-;;               ;;("s-p" . projectile-command-map)
-;;               ("C-c p" . projectile-command-map))
-;;   :custom
-;;   (projectile-completion-system 'ivy)
-;;   )
+(use-package projectile
+  :ensure t
+  :init
+  (projectile-mode 1)
+  :bind (:map projectile-mode-map
+              ;;("s-p" . projectile-command-map)
+              ("C-c p" . projectile-command-map))
+  :custom
+  (projectile-completion-system 'ivy)
+  )
 (provide 'init_lsp)
 ;;; init_lsp.el ends here
