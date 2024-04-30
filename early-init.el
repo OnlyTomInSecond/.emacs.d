@@ -1,4 +1,3 @@
-(setq gc-cons-percentage 0.6)
-(setq gc-cons-threshold most-positive-fixnum)
+(setq gc-cons-threshold (* 50 1024 1024))
 
 (provide 'early-init)

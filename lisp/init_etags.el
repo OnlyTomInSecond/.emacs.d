@@ -1,5 +1,6 @@
 (use-package counsel-etags
   :ensure t
+  :defer t
   :bind (("C-]" . counsel-etags-find-tag-at-point))
   :init
   (add-hook 'prog-mode-hook

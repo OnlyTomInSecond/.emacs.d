@@ -2,7 +2,7 @@
 (use-package company
   :ensure t
   :defer t
-  :hook (prog-mode . global-company-mode)
+  :hook (prog-mode . company-mode)
   ;; :bind (
   ;;        :map company-mode-map
   ;;        ([remap completion-at-point] . company-complete)
@@ -115,16 +115,18 @@
   ;;:bind ("C-c e f" . eglot-format)
   :ensure t
   :defer t
-  :init
-  (add-hook 'prog-mode-hook
-	        (lambda () (unless (member major-mode '(emacs-lisp-mode cmake-mode))
-			             (eglot-ensure))))
+  :hook (prog-mode . (lambda () (unless (member major-mode '(emacs-lisp-mode cmake-mode))
+			                      (eglot-ensure))))
+  ;; :init
+  ;; (add-hook 'prog-mode-hook
+  ;;           (lambda () (unless (member major-mode '(emacs-lisp-mode cmake-mode))
+  ;;   		             (eglot-ensure))))
 
-  :after (company)
+  :after (treesit company)
 
   :config
   (add-to-list 'eglot-server-programs
-               '((c-mode c++-mode c-or-c++-mode)
+               '((c-mode c-ts-mode c++-mode c++-ts-mode c-or-c++-mode c-or-c++-ts-mode)
                  . ("~/.emacs.d/bin/ccls.sh"))
                )
   (setq eglot-stay-out-of '(company))
@@ -132,13 +134,14 @@
 
 ;; ts-mode
 ;; (use-package treesit
-;;   ;;:when (and (fboundp 'treesit-available-p) (treesit-available-p))
+;;   :when (and (fboundp 'treesit-available-p) (treesit-available-p))
 ;;   ;;:mode (("\\(?:Dockerfile\\(?:\\..*\\)?\\|\\.[Dd]ockerfile\\)\\'" . dockerfile-ts-mode)
 ;;   ;;("\\.go\\'" . go-ts-mode)
 ;;   ;;("/go\\.mod\\'" . go-mod-ts-mode)
 ;;   ;;("\\.rs\\'" . rust-ts-mode)
 ;;   ;;("\\.ts\\'" . typescript-ts-mode)
 ;;   ;;("\\.y[a]?ml\\'" . yaml-ts-mode))
+;;   :defer t
 ;;   :init
 ;;   (setq major-mode-remap-alist
 ;;         '(
@@ -159,10 +162,9 @@
 ;;           ))
 ;;   :config
 ;;   (setq treesit-font-lock-level 3)
-;;   (setq c-ts-mode-indent-style nil)
+;;   ;;(setq c-ts-mode-indent-style nil)
 
-;;   :custom
-;;   (treesit-language-source-alist
+;;   (setq treesit-language-source-alist
 ;;         '((bash       . ("https://github.com/tree-sitter/tree-sitter-bash"))
 ;;           (c          . ("https://github.com/tree-sitter/tree-sitter-c"))
 ;;           (cpp        . ("https://github.com/tree-sitter/tree-sitter-cpp"))
@@ -204,24 +206,77 @@
 ;;   (ccls-executable "~/.emacs.d/bin/ccls.sh")
 ;;   )
 
-(use-package cc-mode
-  ;;:ensure t
-  :config
-  (setq c-default-style '((java-mode . "java")
-                          (awk-mode . "awk")
-                          (other . "linux"))
-        )
-  (setq c-basic-offset 4)
-  )
+;; (use-package cc-mode
+;;   ;;:ensure t
+;;   :config
+;;   (setq c-default-style '((java-mode . "java")
+;;                           (awk-mode . "awk")
+;;                           (other . "linux"))
+;;         )
+;;   (setq c-basic-offset 4)
+;;   )
 
 ;; Enable Code Folding
 (use-package hideshow
+  :ensure t
   :defer t
   :hook (prog-mode . hs-minor-mode)
   )
-(use-package cmake-mode
+;; (use-package cmake-mode
+;;   :ensure t
+;;   :defer t
+;;   )
+
+(use-package treesit
+  :ensure nil ;;Builtin in emacs 29
+  :config
+  (setq treesit-language-source-alist
+        '((bash       . ("https://github.com/tree-sitter/tree-sitter-bash"))
+          (c          . ("https://github.com/tree-sitter/tree-sitter-c"))
+          (cpp        . ("https://github.com/tree-sitter/tree-sitter-cpp"))
+          ;;(css        . ("https://github.com/tree-sitter/tree-sitter-css"))
+          (cmake      . ("https://github.com/uyha/tree-sitter-cmake"))
+          ;;(csharp     . ("https://github.com/tree-sitter/tree-sitter-c-sharp.git"))
+          ;;(dockerfile . ("https://github.com/camdencheek/tree-sitter-dockerfile"))
+          (elisp      . ("https://github.com/Wilfred/tree-sitter-elisp"))
+          ;;(go         . ("https://github.com/tree-sitter/tree-sitter-go"))
+          ;;(gomod      . ("https://github.com/camdencheek/tree-sitter-go-mod.git"))
+          ;;(html       . ("https://github.com/tree-sitter/tree-sitter-html"))
+          ;;(java       . ("https://github.com/tree-sitter/tree-sitter-java.git"))
+          ;;(javascript . ("https://github.com/tree-sitter/tree-sitter-javascript"))
+          ;;(json       . ("https://github.com/tree-sitter/tree-sitter-json"))
+          ;;(lua        . ("https://github.com/Azganoth/tree-sitter-lua"))
+          (make       . ("https://github.com/alemuller/tree-sitter-make"))
+          (markdown   . ("https://github.com/MDeiml/tree-sitter-markdown" nil "tree-sitter-markdown/src"))
+          ;;(ocaml      . ("https://github.com/tree-sitter/tree-sitter-ocaml" nil "ocaml/src"))
+          (org        . ("https://github.com/milisims/tree-sitter-org"))
+          (python     . ("https://github.com/tree-sitter/tree-sitter-python"))
+          ;;(php        . ("https://github.com/tree-sitter/tree-sitter-php"))
+          ;;(typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" nil "typescript/src"))
+          ;;(tsx        . ("https://github.com/tree-sitter/tree-sitter-typescript" nil "tsx/src"))
+          ;;(ruby       . ("https://github.com/tree-sitter/tree-sitter-ruby"))
+          ;;(rust       . ("https://github.com/tree-sitter/tree-sitter-rust"))
+          ;;(sql        . ("https://github.com/m-novikov/tree-sitter-sql"))
+          ;;(vue        . ("https://github.com/merico-dev/tree-sitter-vue"))
+          ;;(yaml       . ("https://github.com/ikatyang/tree-sitter-yaml"))
+          ;;(toml       . ("https://github.com/tree-sitter/tree-sitter-toml"))
+          ;;(zig        . ("https://github.com/GrayJack/tree-sitter-zig"))
+          ))
+  )
+
+(use-package treesit-auto
   :ensure t
-  :defer t
+  ;;:defer t
+  :after (treesit)
+  :hook (prog-mode . global-treesit-auto-mode)
+  :config
+  (setq treesit-auto-langs '(c c++ cmake python))
+  (setq c-ts-mode-indent-style 'linux)
+  (setq c-ts-mode-indent-offset 4)
+  (setq treesit-font-lock-level 4)
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  :custom
+  (treesit-auto-install 'prompt)
   )
 
 ;; Code format ============================
@@ -229,15 +284,15 @@
 (use-package format-all
   :ensure t
   :defer t
-  :commands format-all-mode
+  ;;:commands format-all-mode
   :hook (prog-mode . format-all-mode)
   :config
   (setq-default format-all-formatters
                 '(
-                  ("C" (clang-format "--style={BasedOnStyle: llvm, IndentWidth: 4, TabWidth: 4}"))
-                  ("C++" (clang-format "--style={BasedOnStyle: llvm, IndentWidth: 4, TabWidth: 4}"))
-                  ("Python" (yapf "--style google"))
-                  ("Shell" (shfmt "-i 4 -ci"))
+                  ("C" (clang-format "--style={BasedOnStyle: llvm, UseTab: Always, IndentWidth: 4, TabWidth: 4}"))
+                  ("C++" (clang-format "--style={BasedOnStyle: llvm, UseTab: Always, IndentWidth: 4, TabWidth: 4}"))
+                  ("Python" (yapf "--style" "google"))
+                  ("Shell" (shfmt "-i" "4" "-ci"))
                   ("Java" (astyle "--mode=java"))
                   ;;("JavaScript" (prettier))
                   )
@@ -267,15 +322,14 @@
   :defer t
   )
 
-
 ;; (use-package company-dict
 ;;   :ensure t
 ;;   )
 
 (use-package projectile
   :ensure t
-  :init
-  (projectile-mode 1)
+  :defer t
+  :hook (prog-mode . projectile-mode)
   :bind (:map projectile-mode-map
               ;;("s-p" . projectile-command-map)
               ("C-c p" . projectile-command-map))
