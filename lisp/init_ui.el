@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t -*-
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -7,11 +9,13 @@
 
 (use-package doom-themes
   :ensure t
+  :defer 0.5
   :config
+  (load-theme 'doom-one t)
+  :custom
   ;; Global settings (defaults)
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
         doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (load-theme 'doom-one t)
 
   ;; Enable flashing mode-line on errors
   ;; (doom-themes-visual-bell-config)

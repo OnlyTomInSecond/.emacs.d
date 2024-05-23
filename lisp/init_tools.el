@@ -1,7 +1,9 @@
+;; -*- lexical-binding: t -*-
+
 ;; Tips for next keystroke
 (use-package which-key
   :ensure t
-  :defer t
+  :defer 1
   :hook (after-init . which-key-mode)
   :config
   (which-key-add-key-based-replacements

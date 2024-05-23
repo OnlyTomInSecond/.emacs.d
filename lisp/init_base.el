@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t -*-
+
 ;;; init_base
 ;;; Code:
 
@@ -59,7 +61,7 @@
       scroll-margin 4
       hscroll-step 2
       hscroll-margin 4
-      scroll-conservatively 101
+      scroll-conservatively 50
       scroll-preserve-screen-position 'always)
 
 ;; The nano style for truncated long lines.
@@ -73,7 +75,7 @@
 
 ;;(setq-default fill-column 80)
 ;; No tabs
-;; (setq-default indent-tabs-mode nil)
+;;(setq-default indent-tabs-mode t)
 (setq-default tab-width 4)
 ;; Sane defaults
 (setq use-short-answers t)
@@ -89,13 +91,13 @@
 ;; move-dup, move/copy line or region
 (use-package move-dup
   :ensure t
-  :defer t
+  :defer 1
   :hook (after-init . global-move-dup-mode))
 
 ;; Highlight parenthesises
 (use-package paren
   :ensure nil
-  :defer t
+  :defer 1
   :hook (after-init . show-paren-mode)
   :custom
   (show-paren-when-point-inside-paren t)
@@ -105,7 +107,7 @@
 ;; Highlight current line in GUI
 (use-package hl-line
   :ensure nil
-  :defer t
+  :defer 1
   :when (display-graphic-p)
   :hook (after-init . global-hl-line-mode))
 
@@ -119,50 +121,72 @@
 ;;   (sentence-end "\\([，。、！？]\\|……\\|[,.?!][]\"')}]*\\($\\|[ \t]\\)\\)[ \t\n]*")
 ;;   (sentence-end-double-space nil))
 
-;; (use-package minibuffer
-;;   ;; :bind (:map minibuffer-local-map
-;;   ;;             ([escape] . abort-recursive-edit)
-;;   ;;             :map minibuffer-local-ns-map
-;;   ;;             ([escape] . abort-recursive-edit)
-;;   ;;             :map minibuffer-local-completion-map
-;;   ;;             ([escape] . abort-recursive-edit)
-;;   ;;             :map minibuffer-local-must-match-map
-;;   ;;             ([escape] . abort-recursive-edit)
-;;   ;;             :map minibuffer-local-isearch-map
-;;   ;;             ([escape] . abort-recursive-edit))
-;;   :custom
-;;   (completion-auto-help t)
-;;   (completion-show-help nil)
-;;   ;; Cycle completions regardless of the count
-;;   (completion-cycle-threshold t)
-;;   ;;(enable-recursive-minibuffers t)
-;;   (minibuffer-depth-indicate-mode t)
-;;   (minibuffer-eldef-shorten-default t)
-;;   (minibuffer-electric-default-mode t)
-;;   ;; One frame one minibuffer.
-;;   (minibuffer-follows-selected-frame nil)
-;;   ;; Ignore cases when complete
-;;   (completion-ignore-case t)
-;;   (read-buffer-completion-ignore-case t)
-;;   (read-file-name-completion-ignore-case t)
-;;   ;; `selectrum', `vertico' and `icomplete' will honoring
-;;   (completion-styles '(basic partial-completion substring flex))
-;;   (completion-category-overrides '((buffer (styles . (flex)))))
-;;   ;; vertical view
-;;   (completions-format 'one-column)
-;;   (completions-detailed t)
-;;   )
+(use-package minibuffer
+  :defer t
+  ;; :bind (:map minibuffer-local-map
+  ;;             ([escape] . abort-recursive-edit)
+  ;;             :map minibuffer-local-ns-map
+  ;;             ([escape] . abort-recursive-edit)
+  ;;             :map minibuffer-local-completion-map
+  ;;             ([escape] . abort-recursive-edit)
+  ;;             :map minibuffer-local-must-match-map
+  ;;             ([escape] . abort-recursive-edit)
+  ;;             :map minibuffer-local-isearch-map
+  ;;             ([escape] . abort-recursive-edit))
+  :custom
+  (completion-auto-help t)
+  (completion-show-help nil)
+  ;; Cycle completions regardless of the count
+  (completion-cycle-threshold t)
+  ;;(enable-recursive-minibuffers t)
+  (minibuffer-depth-indicate-mode t)
+  (minibuffer-eldef-shorten-default t)
+  (minibuffer-electric-default-mode t)
+  ;; One frame one minibuffer.
+  (minibuffer-follows-selected-frame nil)
+  ;; Ignore cases when complete
+  (completion-ignore-case t)
+  (read-buffer-completion-ignore-case t)
+  (read-file-name-completion-ignore-case t)
+  ;; `selectrum', `vertico' and `icomplete' will honoring
+  (completion-styles '(basic partial-completion substring flex))
+  (completion-category-overrides '((buffer (styles . (flex)))))
+  ;; vertical view
+  (completions-format 'one-column)
+  (completions-detailed t)
+  )
 ;; Set language environment to UTF-8
 (set-language-environment "UTF-8")
 (set-default-coding-systems 'utf-8)
 
 
 ;; Enable visual-line-mode
-(global-visual-line-mode 1)
+;;(global-visual-line-mode 1)
 
-(use-package esup
+;; auto update packages
+(use-package auto-package-update
   :ensure t
-  :defer t)
+  :defer 1
+  :custom
+  (auto-package-update-interval 7)
+  (auto-package-update-prompt-before-update t)
+  (auto-package-update-hide-results t)
+  :config
+  (auto-package-update-maybe)
+  (auto-package-update-at-time "09:00")
+  )
+
+;; vterm
+(use-package vterm
+  :ensure t
+  :defer 1
+  )
+
+;;(use-package benchmark-init
+;;  :ensure t
+;;  :config
+  ;; To disable collection of benchmark data after init is done.
+;;  (add-hook 'after-init-hook 'benchmark-init/deactivate))
 
 (provide 'init_base)
 ;;; init_base.el ends here

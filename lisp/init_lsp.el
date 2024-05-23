@@ -1,7 +1,9 @@
+;; -*- lexical-binding: t -*-
+
 ;;; configuration for company mode and lsp
 (use-package company
   :ensure t
-  :defer t
+  :defer 1
   :hook (prog-mode . company-mode)
   ;; :bind (
   ;;        :map company-mode-map
@@ -14,8 +16,7 @@
 
   :custom
   (company-backends '(company-capf
-                      (company-dabbrev-code company-dabbrev company-abbrev company-etags company-keywords company-files)
-                      company-cmake
+                      (company-dabbrev-code company-dabbrev company-abbrev company-etags company-keywords company-files company-cmake)
                       )
                     )
   (company-idle-delay 0.0)
@@ -109,28 +110,28 @@
 ;; (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
 ;; ======================================================================
 
-;; eglot
-;; Language Server (eglot - builtin since v29)
+;;eglot
+;;Language Server (eglot - builtin since v29)
 (use-package eglot
   ;;:bind ("C-c e f" . eglot-format)
   :ensure t
-  :defer t
-  :hook (prog-mode . (lambda () (unless (member major-mode '(emacs-lisp-mode cmake-mode))
+  :defer 1
+  :hook (prog-mode . (lambda () (unless (member major-mode '(emacs-lisp-mode cmake-mode cmake-ts-mode))
 			                      (eglot-ensure))))
   ;; :init
   ;; (add-hook 'prog-mode-hook
   ;;           (lambda () (unless (member major-mode '(emacs-lisp-mode cmake-mode))
   ;;   		             (eglot-ensure))))
 
-  :after (treesit company)
+   ;; :after (company)
 
-  :config
-  (add-to-list 'eglot-server-programs
-               '((c-mode c-ts-mode c++-mode c++-ts-mode c-or-c++-mode c-or-c++-ts-mode)
-                 . ("~/.emacs.d/bin/ccls.sh"))
-               )
-  (setq eglot-stay-out-of '(company))
-  )
+   :config
+   (add-to-list 'eglot-server-programs
+                '((c-mode c-ts-mode c++-mode c++-ts-mode c-or-c++-mode c-or-c++-ts-mode)
+                  . ("~/.emacs.d/bin/ccls.sh"))
+                )
+   (setq eglot-stay-out-of '(company))
+   )
 
 ;; ts-mode
 ;; (use-package treesit
@@ -219,7 +220,7 @@
 ;; Enable Code Folding
 (use-package hideshow
   :ensure t
-  :defer t
+  :defer 1
   :hook (prog-mode . hs-minor-mode)
   )
 ;; (use-package cmake-mode
@@ -266,11 +267,11 @@
 
 (use-package treesit-auto
   :ensure t
-  ;;:defer t
-  :after (treesit)
+  :defer 1
+  ;;:after (treesit)
   :hook (prog-mode . global-treesit-auto-mode)
   :config
-  (setq treesit-auto-langs '(c c++ cmake python))
+  (setq treesit-auto-langs '(c cpp cmake python elisp))
   (setq c-ts-mode-indent-style 'linux)
   (setq c-ts-mode-indent-offset 4)
   (setq treesit-font-lock-level 4)
@@ -283,14 +284,16 @@
 ;; This needs clang-format,yapf(python),shfmt,astyle installed
 (use-package format-all
   :ensure t
-  :defer t
+  :defer 1
   ;;:commands format-all-mode
-  :hook (prog-mode . format-all-mode)
+  ;;:hook (prog-mode . format-all-mode)
   :config
   (setq-default format-all-formatters
                 '(
-                  ("C" (clang-format "--style={BasedOnStyle: llvm, UseTab: Always, IndentWidth: 4, TabWidth: 4}"))
-                  ("C++" (clang-format "--style={BasedOnStyle: llvm, UseTab: Always, IndentWidth: 4, TabWidth: 4}"))
+                  ("C" (clang-format "--style={BasedOnStyle: llvm, IndentWidth: 4, TabWidth: 4}"))
+                  ("C++" (clang-format "--style={BasedOnStyle: llvm, IndentWidth: 4, TabWidth: 4}"))
+				  ;; ("C" (clang-format "--style={BasedOnStyle: llvm}"))
+                  ;; ("C++" (clang-format "--style={BasedOnStyle: llvm}"))
                   ("Python" (yapf "--style" "google"))
                   ("Shell" (shfmt "-i" "4" "-ci"))
                   ("Java" (astyle "--mode=java"))
@@ -298,7 +301,7 @@
                   )
                 )
   :bind (
-         ("C-M-\\" . format-all-buffer)
+         ("C-M-\\" . format-all-region)
          )
   )
 
@@ -313,13 +316,13 @@
 
 (use-package yasnippet
   :ensure t
-  :defer t
+  :defer 1
   :hook (prog-mode . yas-minor-mode)
   )
 
 (use-package yasnippet-snippets
   :ensure t
-  :defer t
+  :defer 1
   )
 
 ;; (use-package company-dict
@@ -328,7 +331,7 @@
 
 (use-package projectile
   :ensure t
-  :defer t
+  :defer 1
   :hook (prog-mode . projectile-mode)
   :bind (:map projectile-mode-map
               ;;("s-p" . projectile-command-map)

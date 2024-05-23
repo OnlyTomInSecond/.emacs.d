@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t -*-
+
 ;;(setq gc-cons-percentage 0.1)
 
 ;; A simple frame title
@@ -10,7 +12,9 @@
                          ("nongnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")
                          ("melpa"  . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
 ;;(package-initialize) ;; You might already have this line
-
+;;Avoid execute package-refresh-contents many times
+;;(when (not package-archive-contents)
+;;  (package-refresh-contents))
 ;; Bootstrap `use-package'
 ;; (unless (package-installed-p 'use-package)
 ;;   (package-refresh-contents)
@@ -26,8 +30,7 @@
 
 ;;Keep ~/.emacs.d/ clean.
 (use-package no-littering
-  :ensure t
-  :demand t)
+  :ensure t)
 
 ;; I wanna newer packages.
 (setq package-install-upgrade-built-in t)
