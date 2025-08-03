@@ -14,18 +14,20 @@
   :hook (markdown-mode . visual-line-mode)
 
   :custom
-  (markdown-header-scaling t)
-  (markdown-enable-wiki-links t)
-  (markdown-italic-underscore t)
-  (markdown-asymmetric-header t)
-  (markdown-gfm-uppercase-checkbox t)
-  (markdown-fontify-code-blocks-natively t))
+;;   (markdown-header-scaling t)
+;;   (markdown-enable-wiki-links t)
+;;   (markdown-italic-underscore t)
+;;   (markdown-asymmetric-header t)
+;;   (markdown-gfm-uppercase-checkbox t)
+   (markdown-fontify-code-blocks-natively t)
+   (markdown-command '("pandoc" "--from=markdown" "--to=html5"))
+  )
 
 ;; ReStructuredText
-(use-package rst
-  :ensure nil
-  :hook ((rst-mode . visual-line-mode)
-         (rst-adjust . rst-toc-update)))
+;; (use-package rst
+;;   :ensure nil
+;;   :hook ((rst-mode . visual-line-mode)
+;;          (rst-adjust . rst-toc-update)))
 
 (use-package rime
   :ensure t

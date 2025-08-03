@@ -1,47 +1,109 @@
 ;; -*- lexical-binding: t -*-
 
-;;; configuration for company mode and lsp
-(use-package company
-  :ensure t
-  :defer 1
-  :hook (prog-mode . company-mode)
-  ;; :bind (
-  ;;        :map company-mode-map
-  ;;        ([remap completion-at-point] . company-complete)
-  ;;        :map company-active-map
-  ;;        ;;("C-s"     . company-filter-candidates)
-  ;;        ([tab]     . company-complete-common-or-cycle)
-  ;;        ([backtab] . company-select-previous-or-abort)
-  ;;        )
+;; configuration for company mode and lsp
+;;(use-package company
+;;  :ensure t
+;;  :defer 1
+;;  :hook (prog-mode . company-mode)
+;;  ;; :bind (
+;;  ;;        :map company-mode-map
+;;  ;;        ([remap completion-at-point] . company-complete)
+;;  ;;        :map company-active-map
+;;  ;;        ;;("C-s"     . company-filter-candidates)
+;;  ;;        ([tab]     . company-complete-common-or-cycle)
+;;  ;;        ([backtab] . company-select-previous-or-abort)
+;;  ;;        )
+;;
+;;  :custom
+;;;;    (company-backends '(company-capf
+;;;;                        (company-dabbrev-code company-dabbrev company-abbrev company-etags company-keywords company-files)
+;;;;                        )
+;;;;                      )
+;;  (company-idle-delay 0.3)
+;;  ;; Easy navigation to candidates with M-<n>
+;;  (company-show-quick-access t)
+;;  (company-require-match nil)
+;;  (completion-ignore-case t)
+;;  (company-minimum-prefix-length 3)
+;;  ;;(company-selection-wrap-around t)
+;;  (company-tooltip-width-grow-only t)
+;;  (company-tooltip-align-annotations t)
+;;  ;; complete `abbrev' only in current buffer and make dabbrev case-sensitive
+;;  (company-dabbrev-other-buffers nil)
+;;  ;;(company-dabbrev-ignore-case nil)
+;;  ;;(company-dabbrev-downcase nil)
+;;  ;; make dabbrev-code not case-sensitive
+;;  (company-dabbrev-code-ignore-case t)
+;;  (company-dabbrev-code-everywhere t)
+;;  ;; call `tempo-expand-if-complete' after completion
+;;  ;; (company-tempo-expand t)
+;;  ;; Ignore uninteresting files. Items end with a slash are recognized as
+;;  ;; directories.
+;;  (company-files-exclusions '(".git/" ".DS_Store"))
+;;  ;; No icons
+;;  (company-format-margin-function nil)
+;;  )
 
+(use-package corfu
+  :defer 1
+  :ensure t
+  ;; Optional customizations
+  :bind
+  ;; Configure SPC for separator insertion
+  (:map corfu-map ("s-SPC" . corfu-insert-separator))
   :custom
-  (company-backends '(company-capf
-                      (company-dabbrev-code company-dabbrev company-abbrev company-etags company-keywords company-files company-cmake)
-                      )
-                    )
-  (company-idle-delay 0.0)
-  ;; Easy navigation to candidates with M-<n>
-  (company-show-quick-access t)
-  ;; (company-require-match nil)
-  (company-minimum-prefix-length 3)
-  ;; (company-selection-wrap-around t)
-  (company-tooltip-width-grow-only t)
-  (company-tooltip-align-annotations t)
-  ;; complete `abbrev' only in current buffer and make dabbrev case-sensitive
-  ;; (company-dabbrev-other-buffers nil)
-  ;;(company-dabbrev-ignore-case nil)
-  ;; (company-dabbrev-downcase nil)
-  ;; make dabbrev-code not case-sensitive
-  ;;(company-dabbrev-code-ignore-case t)
-  ;; (company-dabbrev-code-everywhere t)
-  ;; call `tempo-expand-if-complete' after completion
-  ;; (company-tempo-expand t)
-  ;; Ignore uninteresting files. Items end with a slash are recognized as
-  ;; directories.
-  (company-files-exclusions '(".git/" ".DS_Store"))
-  ;; No icons
-  (company-format-margin-function nil)
+  (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+  (corfu-quit-at-boundary 'nil)   ;; Never quit at completion boundary
+  (corfu-quit-no-match 'separator)      ;; Never quit, even if there is no match
+  (corfu-preview-current nil)    ;; Disable current candidate preview
+  (corfu-preselect 'insert)      ;; Preselect the prompt
+  (corfu-on-exact-match nil)     ;; Configure handling of exact matches
+  ;;(corfu-separator ?/s)
+
+  ;; Enable Corfu only for certain modes. See also `global-corfu-modes'.
+  ;; :hook ((prog-mode . corfu-mode)
+  ;;        (shell-mode . corfu-mode)
+  ;;        (eshell-mode . corfu-mode))
+
+  ;; Recommended: Enable Corfu globally.  This is recommended since Dabbrev can
+  ;; be used globally (M-/).  See also the customization variable
+  ;; `global-corfu-modes' to exclude certain modes.
+  :init
+  (global-corfu-mode)
   )
+
+;; A few more useful configurations...
+(use-package emacs
+  :defer 1
+  :custom
+  ;; TAB cycle if there are only few candidates
+  ;; (completion-cycle-threshold 3)
+
+  ;; Enable indentation+completion using the TAB key.
+  ;; `completion-at-point' is often bound to M-TAB.
+  ;; (tab-always-indent 'complete)
+
+  ;; Emacs 30 and newer: Disable Ispell completion function.
+  ;; Try `cape-dict' as an alternative.
+  (text-mode-ispell-word-completion nil)
+
+  ;; Hide commands in M-x which do not apply to the current mode.  Corfu
+  ;; commands are hidden, since they are not used via M-x. This setting is
+  ;; useful beyond Corfu.
+  (read-extended-command-predicate #'command-completion-default-include-p))
+
+;; Use Dabbrev with Corfu!
+(use-package dabbrev
+  ;; Swap M-/ and C-M-/
+  :defer 1
+;;  :bind (("M-/" . dabbrev-completion)
+;;         ("C-M-/" . dabbrev-expand))
+  :config
+  (add-to-list 'dabbrev-ignored-buffer-regexps "\\` ")
+  ;; Since 29.1, use `dabbrev-ignored-buffer-regexps' on older.
+  (add-to-list 'dabbrev-ignored-buffer-modes 'doc-view-mode)
+  (add-to-list 'dabbrev-ignored-buffer-modes 'pdf-view-mode)
+  (add-to-list 'dabbrev-ignored-buffer-modes 'tags-table-mode))
 
 ;; (use-package company-c-headers
 ;;   :ensure t
@@ -115,89 +177,34 @@
 (use-package eglot
   ;;:bind ("C-c e f" . eglot-format)
   :ensure t
-  :defer 1
-  :hook (prog-mode . (lambda () (unless (member major-mode '(emacs-lisp-mode cmake-mode cmake-ts-mode))
+  :hook (prog-mode . (lambda () (unless (member major-mode '(emacs-lisp-mode))
 			                      (eglot-ensure))))
   ;; :init
   ;; (add-hook 'prog-mode-hook
   ;;           (lambda () (unless (member major-mode '(emacs-lisp-mode cmake-mode))
   ;;   		             (eglot-ensure))))
 
-   ;; :after (company)
-
-   :config
-   (add-to-list 'eglot-server-programs
-                '((c-mode c-ts-mode c++-mode c++-ts-mode c-or-c++-mode c-or-c++-ts-mode)
-                  . ("~/.emacs.d/bin/ccls.sh"))
-                )
-   (setq eglot-stay-out-of '(company))
-   )
-
-;; ts-mode
-;; (use-package treesit
-;;   :when (and (fboundp 'treesit-available-p) (treesit-available-p))
-;;   ;;:mode (("\\(?:Dockerfile\\(?:\\..*\\)?\\|\\.[Dd]ockerfile\\)\\'" . dockerfile-ts-mode)
-;;   ;;("\\.go\\'" . go-ts-mode)
-;;   ;;("/go\\.mod\\'" . go-mod-ts-mode)
-;;   ;;("\\.rs\\'" . rust-ts-mode)
-;;   ;;("\\.ts\\'" . typescript-ts-mode)
-;;   ;;("\\.y[a]?ml\\'" . yaml-ts-mode))
-;;   :defer t
-;;   :init
-;;   (setq major-mode-remap-alist
-;;         '(
-;;           (sh-mode . bash-ts-mode)
-;;           (c-mode . c-ts-mode)
-;;           (c++-mode . c++-ts-mode)
-;;           (c-or-c++-mode . c-or-c++-ts-mode)
-;;           ;;(css-mode . css-ts-mode)
-;;           ;;(js-mode . js-ts-mode)
-;;           ;;(java-mode . java-ts-mode)
-;;           ;;(js-json-mode . json-ts-mode)
-;;           (makefile-mode . cmake-ts-mode)
-;;           (python-mode . python-ts-mode)
-;;           ;;(ruby-mode . ruby-ts-mode)
-;;           ;;(conf-toml-mode . toml-ts-mode)
-;;           ;; (elisp-mode . elisp-ts-mode)
-;;           (cmake-mode . cmake-ts-mode)
-;;           ))
-;;   :config
-;;   (setq treesit-font-lock-level 3)
-;;   ;;(setq c-ts-mode-indent-style nil)
-
-;;   (setq treesit-language-source-alist
-;;         '((bash       . ("https://github.com/tree-sitter/tree-sitter-bash"))
-;;           (c          . ("https://github.com/tree-sitter/tree-sitter-c"))
-;;           (cpp        . ("https://github.com/tree-sitter/tree-sitter-cpp"))
-;;           ;;(css        . ("https://github.com/tree-sitter/tree-sitter-css"))
-;;           (cmake      . ("https://github.com/uyha/tree-sitter-cmake"))
-;;           ;;(csharp     . ("https://github.com/tree-sitter/tree-sitter-c-sharp.git"))
-;;           ;;(dockerfile . ("https://github.com/camdencheek/tree-sitter-dockerfile"))
-;;           (elisp      . ("https://github.com/Wilfred/tree-sitter-elisp"))
-;;           ;;(go         . ("https://github.com/tree-sitter/tree-sitter-go"))
-;;           ;;(gomod      . ("https://github.com/camdencheek/tree-sitter-go-mod.git"))
-;;           ;;(html       . ("https://github.com/tree-sitter/tree-sitter-html"))
-;;           ;;(java       . ("https://github.com/tree-sitter/tree-sitter-java.git"))
-;;           ;;(javascript . ("https://github.com/tree-sitter/tree-sitter-javascript"))
-;;           ;;(json       . ("https://github.com/tree-sitter/tree-sitter-json"))
-;;           ;;(lua        . ("https://github.com/Azganoth/tree-sitter-lua"))
-;;           (make       . ("https://github.com/alemuller/tree-sitter-make"))
-;;           (markdown   . ("https://github.com/MDeiml/tree-sitter-markdown" nil "tree-sitter-markdown/src"))
-;;           ;;(ocaml      . ("https://github.com/tree-sitter/tree-sitter-ocaml" nil "ocaml/src"))
-;;           (org        . ("https://github.com/milisims/tree-sitter-org"))
-;;           (python     . ("https://github.com/tree-sitter/tree-sitter-python"))
-;;           ;;(php        . ("https://github.com/tree-sitter/tree-sitter-php"))
-;;           ;;(typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" nil "typescript/src"))
-;;           ;;(tsx        . ("https://github.com/tree-sitter/tree-sitter-typescript" nil "tsx/src"))
-;;           ;;(ruby       . ("https://github.com/tree-sitter/tree-sitter-ruby"))
-;;           ;;(rust       . ("https://github.com/tree-sitter/tree-sitter-rust"))
-;;           ;;(sql        . ("https://github.com/m-novikov/tree-sitter-sql"))
-;;           ;;(vue        . ("https://github.com/merico-dev/tree-sitter-vue"))
-;;           ;;(yaml       . ("https://github.com/ikatyang/tree-sitter-yaml"))
-;;           ;;(toml       . ("https://github.com/tree-sitter/tree-sitter-toml"))
-;;           ;;(zig        . ("https://github.com/GrayJack/tree-sitter-zig"))
-;;           ))
-;;   )
+  :config
+  ;;   (add-to-list 'eglot-server-programs
+  ;;                '((c-mode c-ts-mode c++-mode c++-ts-mode c-or-c++-mode c-or-c++-ts-mode)
+  ;;                  . ("~/.emacs.d/bin/ccls.sh"))
+  ;;                )
+  (setq eglot-server-programs
+        (nconc '(
+                 ((c-mode c-ts-mode c++-mode c++-ts-mode c-or-c++-mode c-or-c++-ts-mode)
+                  . ("/home/whh/.emacs.d/bin/ccls.sh"))
+                 ;;((cmake-mode cmake-ts-mode) . ("cmake-language-server"
+                 ;;                               :initializationOptions
+                 ;;                               (:buildDirectory "build")
+                 ;;                               ))
+                 )
+               eglot-server-programs
+               )
+        )
+  ;; :custom
+  ;; (eglot-ignored-server-capabilities '(:documentOnTypeFormattingProvider))
+  ;;(setq eglot-stay-out-of '(company))
+  )
 
 ;; ccls
 ;; (use-package ccls
@@ -233,36 +240,36 @@
   :config
   (setq treesit-language-source-alist
         '((bash       . ("https://github.com/tree-sitter/tree-sitter-bash"))
-          (c          . ("https://github.com/tree-sitter/tree-sitter-c"))
-          (cpp        . ("https://github.com/tree-sitter/tree-sitter-cpp"))
-          ;;(css        . ("https://github.com/tree-sitter/tree-sitter-css"))
-          (cmake      . ("https://github.com/uyha/tree-sitter-cmake"))
-          ;;(csharp     . ("https://github.com/tree-sitter/tree-sitter-c-sharp.git"))
-          ;;(dockerfile . ("https://github.com/camdencheek/tree-sitter-dockerfile"))
-          (elisp      . ("https://github.com/Wilfred/tree-sitter-elisp"))
-          ;;(go         . ("https://github.com/tree-sitter/tree-sitter-go"))
-          ;;(gomod      . ("https://github.com/camdencheek/tree-sitter-go-mod.git"))
-          ;;(html       . ("https://github.com/tree-sitter/tree-sitter-html"))
-          ;;(java       . ("https://github.com/tree-sitter/tree-sitter-java.git"))
-          ;;(javascript . ("https://github.com/tree-sitter/tree-sitter-javascript"))
-          ;;(json       . ("https://github.com/tree-sitter/tree-sitter-json"))
-          ;;(lua        . ("https://github.com/Azganoth/tree-sitter-lua"))
-          (make       . ("https://github.com/alemuller/tree-sitter-make"))
-          (markdown   . ("https://github.com/MDeiml/tree-sitter-markdown" nil "tree-sitter-markdown/src"))
-          ;;(ocaml      . ("https://github.com/tree-sitter/tree-sitter-ocaml" nil "ocaml/src"))
-          (org        . ("https://github.com/milisims/tree-sitter-org"))
-          (python     . ("https://github.com/tree-sitter/tree-sitter-python"))
-          ;;(php        . ("https://github.com/tree-sitter/tree-sitter-php"))
-          ;;(typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" nil "typescript/src"))
-          ;;(tsx        . ("https://github.com/tree-sitter/tree-sitter-typescript" nil "tsx/src"))
-          ;;(ruby       . ("https://github.com/tree-sitter/tree-sitter-ruby"))
-          ;;(rust       . ("https://github.com/tree-sitter/tree-sitter-rust"))
-          ;;(sql        . ("https://github.com/m-novikov/tree-sitter-sql"))
-          ;;(vue        . ("https://github.com/merico-dev/tree-sitter-vue"))
-          ;;(yaml       . ("https://github.com/ikatyang/tree-sitter-yaml"))
-          ;;(toml       . ("https://github.com/tree-sitter/tree-sitter-toml"))
-          ;;(zig        . ("https://github.com/GrayJack/tree-sitter-zig"))
-          ))
+ 		  (c          . ("https://github.com/tree-sitter/tree-sitter-c"))
+ 		  (cpp        . ("https://github.com/tree-sitter/tree-sitter-cpp"))
+ 		  ;;(css        . ("https://github.com/tree-sitter/tree-sitter-css"))
+ 		  (cmake      . ("https://github.com/uyha/tree-sitter-cmake"))
+ 		  ;;(csharp     . ("https://github.com/tree-sitter/tree-sitter-c-sharp.git"))
+ 		  ;;(dockerfile . ("https://github.com/camdencheek/tree-sitter-dockerfile"))
+ 		  (elisp      . ("https://github.com/Wilfred/tree-sitter-elisp"))
+ 		  ;;(go         . ("https://github.com/tree-sitter/tree-sitter-go"))
+ 		  ;;(gomod      . ("https://github.com/camdencheek/tree-sitter-go-mod.git"))
+ 		  ;;(html       . ("https://github.com/tree-sitter/tree-sitter-html"))
+ 		  (java       . ("https://github.com/tree-sitter/tree-sitter-java.git"))
+ 		  ;;(javascript . ("https://github.com/tree-sitter/tree-sitter-javascript"))
+ 		  ;;(json       . ("https://github.com/tree-sitter/tree-sitter-json"))
+ 		  ;;(lua        . ("https://github.com/Azganoth/tree-sitter-lua"))
+ 		  (make       . ("https://github.com/alemuller/tree-sitter-make"))
+ 		  (markdown   . ("https://github.com/MDeiml/tree-sitter-markdown" nil "tree-sitter-markdown/src"))
+ 		  ;;(ocaml      . ("https://github.com/tree-sitter/tree-sitter-ocaml" nil "ocaml/src"))
+ 		  (org        . ("https://github.com/milisims/tree-sitter-org"))
+ 		  (python     . ("https://github.com/tree-sitter/tree-sitter-python"))
+ 		  ;;(php        . ("https://github.com/tree-sitter/tree-sitter-php"))
+ 		  ;;(typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" nil "typescript/src"))
+ 		  ;;(tsx        . ("https://github.com/tree-sitter/tree-sitter-typescript" nil "tsx/src"))
+ 		  ;;(ruby       . ("https://github.com/tree-sitter/tree-sitter-ruby"))
+ 		  (rust       . ("https://github.com/tree-sitter/tree-sitter-rust"))
+ 		  ;;(sql        . ("https://github.com/m-novikov/tree-sitter-sql"))
+ 		  ;;(vue        . ("https://github.com/merico-dev/tree-sitter-vue"))
+ 		  ;;(yaml       . ("https://github.com/ikatyang/tree-sitter-yaml"))
+ 		  ;;(toml       . ("https://github.com/tree-sitter/tree-sitter-toml"))
+ 		  ;;(zig        . ("https://github.com/GrayJack/tree-sitter-zig"))
+ 		  ))
   )
 
 (use-package treesit-auto
@@ -271,7 +278,7 @@
   ;;:after (treesit)
   :hook (prog-mode . global-treesit-auto-mode)
   :config
-  (setq treesit-auto-langs '(c cpp cmake python elisp))
+  (setq treesit-auto-langs '(c cpp cmake python elisp java rust))
   (setq c-ts-mode-indent-style 'linux)
   (setq c-ts-mode-indent-offset 4)
   (setq treesit-font-lock-level 4)
@@ -279,6 +286,7 @@
   :custom
   (treesit-auto-install 'prompt)
   )
+
 
 ;; Code format ============================
 ;; This needs clang-format,yapf(python),shfmt,astyle installed
@@ -290,15 +298,18 @@
   :config
   (setq-default format-all-formatters
                 '(
-                  ("C" (clang-format "--style={BasedOnStyle: llvm, IndentWidth: 4, TabWidth: 4}"))
-                  ("C++" (clang-format "--style={BasedOnStyle: llvm, IndentWidth: 4, TabWidth: 4}"))
-				  ;; ("C" (clang-format "--style={BasedOnStyle: llvm}"))
-                  ;; ("C++" (clang-format "--style={BasedOnStyle: llvm}"))
-                  ("Python" (yapf "--style" "google"))
-                  ("Shell" (shfmt "-i" "4" "-ci"))
-                  ("Java" (astyle "--mode=java"))
-                  ;;("JavaScript" (prettier))
-                  )
+				  ;;("C" (clang-format "--style={BasedOnStyle: llvm, IndentWidth: 4, TabWidth: 4}"))
+				  ;;("C++" (clang-format "--style={BasedOnStyle: llvm, IndentWidth: 4, TabWidth: 4}"))
+				  ("C" (clang-format "--style=file:/home/whh/.emacs.d/configs/clang-format"))
+				  ("C++" (clang-format "--style=file:/home/whh/.emacs.d/configs/clang-format"))
+				  ;; ("C" (astyle "--style=gnu"))
+				  ;; ("C++" (astyle "--style=gnu"))
+				  ("Python" (yapf "--style" "google"))
+				  ("Shell" (shfmt "-i" "4" "-ci"))
+				  ("Java" (astyle "--mode=java"))
+                  ("CMake" (cmake-format))
+				  ;;("JavaScript" (prettier))
+				  )
                 )
   :bind (
          ("C-M-\\" . format-all-region)
@@ -329,15 +340,15 @@
 ;;   :ensure t
 ;;   )
 
-(use-package projectile
-  :ensure t
-  :defer 1
-  :hook (prog-mode . projectile-mode)
-  :bind (:map projectile-mode-map
-              ;;("s-p" . projectile-command-map)
-              ("C-c p" . projectile-command-map))
-  :custom
-  (projectile-completion-system 'ivy)
-  )
+;;(use-package projectile
+;;  :ensure t
+;;  :defer 1
+;;  :hook (prog-mode . projectile-mode)
+;;  :bind (:map projectile-mode-map
+;;              ;;("s-p" . projectile-command-map)
+;;              ("C-c p" . projectile-command-map))
+;;  ;;:custom
+;;  ;;(projectile-completion-system 'ivy)
+;;  )
 (provide 'init_lsp)
 ;;; init_lsp.el ends here

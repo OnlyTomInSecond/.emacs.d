@@ -8,25 +8,26 @@
 
 ;;config the elpa mirror in China
 (require 'package)
-(setq package-archives '(("gnu"    . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
-                         ("nongnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")
-                         ("melpa"  . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
-;;(package-initialize) ;; You might already have this line
+(setq package-archives '(("gnu"    . "https://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+                         ("nongnu" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")
+                         ("melpa"  . "https://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
+
+(package-initialize) ;; You might already have this line
 ;;Avoid execute package-refresh-contents many times
 ;;(when (not package-archive-contents)
 ;;  (package-refresh-contents))
 ;; Bootstrap `use-package'
-;; (unless (package-installed-p 'use-package)
-;;   (package-refresh-contents)
-;;   (package-install 'use-package))
-;; (eval-and-compile
-;;   ;; (setq use-package-always-ensure nil)
-;;   ;; (setq use-package-always-defer nil)
-;;   ;; (setq use-package-always-demand nil)
-;;   ;; (setq use-package-expand-minimally nil)
-;;   (setq use-package-enable-imenu-support t))
-;; (eval-when-compile
-;;   (require 'use-package))
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+(eval-and-compile
+  ;; (setq use-package-always-ensure nil)
+  ;; (setq use-package-always-defer nil)
+  ;; (setq use-package-always-demand nil)
+  ;; (setq use-package-expand-minimally nil)
+  (setq use-package-enable-imenu-support t))
+(eval-when-compile
+  (require 'use-package))
 
 ;;Keep ~/.emacs.d/ clean.
 (use-package no-littering
@@ -47,7 +48,7 @@
 ;;   (quelpa-checkout-melpa-p nil))
 
 ;; show line numbers and column numbers
-(global-display-line-numbers-mode 1)
+;; (global-display-line-numbers-mode 1)
 (column-number-mode 1)
 
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
@@ -72,12 +73,12 @@
 ;;(require 'init_etags)
 
 ;;Use a hook so the message doesn't get clobbered by other messages.
-(add-hook 'emacs-startup-hook
-		  (lambda ()
-			(message "Emacs ready in %s with %d garbage collections."
-					 (format "%.2f seconds"
-							 (float-time
-							  (time-subtract after-init-time before-init-time)))
-					 gcs-done)))
-
+;;(add-hook 'emacs-startup-hook
+;;		  (lambda ()
+;;			(message "Emacs ready in %s with %d garbage collections."
+;;					 (format "%.2f seconds"
+;;							 (float-time
+;;							  (time-subtract after-init-time before-init-time)))
+;;					 gcs-done)))
+;;
 ;;(setq gc-cons-threshold (* 10 1024 1024))

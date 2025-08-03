@@ -43,6 +43,8 @@
 ;; No backup files
 (setq make-backup-files nil
       auto-save-default nil)
+;; No lock file
+(setq create-lockfiles nil)
 
 ;; No gc for font caches
 (setq inhibit-compacting-font-caches t)
@@ -75,8 +77,9 @@
 
 ;;(setq-default fill-column 80)
 ;; No tabs
-;;(setq-default indent-tabs-mode t)
+;;(setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
+(setq tab-always-indent 'complete)
 ;; Sane defaults
 (setq use-short-answers t)
 (unless (>= emacs-major-version 28)
@@ -87,6 +90,22 @@
 (setq read-char-choice-use-read-key t)
 
 (electric-pair-mode 1)
+
+;; show all space and tabs
+;;(use-package whitespace-mode
+;;  :defer 1
+;;  :hook (prog-mode . whitespace-mode)
+;;  :custom
+;;  (
+;;    (whitespace-big-indent ((t nil)))
+;;    )
+;;  )
+
+;; enable windmove
+(windmove-default-keybindings)
+(setq window-wrap-around t)
+;; allow restore windown
+(winner-mode 1)
 
 ;; move-dup, move/copy line or region
 (use-package move-dup
@@ -137,7 +156,7 @@
   (completion-auto-help t)
   (completion-show-help nil)
   ;; Cycle completions regardless of the count
-  (completion-cycle-threshold t)
+  (completion-cycle-threshold nil)
   ;;(enable-recursive-minibuffers t)
   (minibuffer-depth-indicate-mode t)
   (minibuffer-eldef-shorten-default t)
@@ -149,38 +168,39 @@
   (read-buffer-completion-ignore-case t)
   (read-file-name-completion-ignore-case t)
   ;; `selectrum', `vertico' and `icomplete' will honoring
-  (completion-styles '(basic partial-completion substring flex))
+  ;; (completion-styles '(basic partial-completion substring flex))
   (completion-category-overrides '((buffer (styles . (flex)))))
   ;; vertical view
-  (completions-format 'one-column)
-  (completions-detailed t)
+  ;; (completions-format 'one-column)
+  ;; (completions-detailed t)
   )
 ;; Set language environment to UTF-8
 (set-language-environment "UTF-8")
 (set-default-coding-systems 'utf-8)
 
-
 ;; Enable visual-line-mode
 ;;(global-visual-line-mode 1)
 
 ;; auto update packages
-(use-package auto-package-update
-  :ensure t
-  :defer 1
-  :custom
-  (auto-package-update-interval 7)
-  (auto-package-update-prompt-before-update t)
-  (auto-package-update-hide-results t)
-  :config
-  (auto-package-update-maybe)
-  (auto-package-update-at-time "09:00")
-  )
+;;(use-package auto-package-update
+;;  :ensure t
+;;  :defer 1
+;;  :custom
+;;  (auto-package-update-interval 7)
+;;  (auto-package-update-prompt-before-update t)
+;;  (auto-package-update-hide-results t)
+;;  :config
+;;  (auto-package-update-maybe)
+;;  (auto-package-update-at-time "09:00")
+;;  )
 
 ;; vterm
 (use-package vterm
   :ensure t
   :defer 1
   )
+
+(setq project-vc-extra-root-markers '(".project.el" ".projectile" ".ccls"))
 
 ;;(use-package benchmark-init
 ;;  :ensure t
