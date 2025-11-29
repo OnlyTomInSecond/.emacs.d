@@ -21,14 +21,16 @@
       )
 ;; No bars and menus
 (setq inhibit-splash-screen t)
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
+(menu-bar-mode 0)
+(tool-bar-mode 0)
+(scroll-bar-mode 0)
 
+;;(ido-mode 1)
+;;(ido-everywhere 1)
 
 ;; Pixel sized window
-(setq window-resize-pixelwise t
-      frame-resize-pixelwise t)
+;; (setq window-resize-pixelwise t
+;;       frame-resize-pixelwise t)
 
 ;; Linux specific
 ;;(setq x-gtk-use-system-tooltips t
@@ -50,24 +52,24 @@
 (setq inhibit-compacting-font-caches t)
 
 ;; Improve display
-(setq display-raw-bytes-as-hex t)
-(setq redisplay-skip-fontification-on-input t)
+;; (setq display-raw-bytes-as-hex t)
+;; (setq redisplay-skip-fontification-on-input t)
 
 ;; No annoying bell
 (setq ring-bell-function 'ignore)
 
 ;; No eyes distraction
-(setq blink-cursor-mode nil)
+(blink-cursor-mode 0)
 ;; Smooth scroll & friends
-(setq scroll-step 2
-      scroll-margin 4
-      hscroll-step 2
-      hscroll-margin 4
-      scroll-conservatively 50
-      scroll-preserve-screen-position 'always)
+;; (setq scroll-step 2
+;;       scroll-margin 4
+;;       hscroll-step 2
+;;       hscroll-margin 4
+;;       scroll-conservatively 50
+;;       scroll-preserve-screen-position 'always)
 
 ;; The nano style for truncated long lines.
-(setq auto-hscroll-mode 'current-line)
+;; (setq auto-hscroll-mode 'current-line)
 
 ;; Disable auto vertical scroll for tall lines
 (setq auto-window-vscroll nil)
@@ -86,8 +88,8 @@
   (fset 'yes-or-no-p 'y-or-n-p))
 
 ;; Inhibit switching out from `y-or-n-p' and `read-char-choice'
-(setq y-or-n-p-use-read-key t)
-(setq read-char-choice-use-read-key t)
+;; (setq y-or-n-p-use-read-key t)
+;; (setq read-char-choice-use-read-key t)
 
 (electric-pair-mode 1)
 
@@ -102,33 +104,33 @@
 ;;  )
 
 ;; enable windmove
-(windmove-default-keybindings)
-(setq window-wrap-around t)
-;; allow restore windown
-(winner-mode 1)
+;; (windmove-default-keybindings)
+;; (setq window-wrap-around t)
+;; allow restore window
+;; (winner-mode 1)
 
 ;; move-dup, move/copy line or region
-(use-package move-dup
-  :ensure t
-  :defer 1
-  :hook (after-init . global-move-dup-mode))
+;; (use-package move-dup
+;;   :ensure t
+;;   :defer 1
+;;   :hook (after-init . global-move-dup-mode))
 
 ;; Highlight parenthesises
-(use-package paren
-  :ensure nil
-  :defer 1
-  :hook (after-init . show-paren-mode)
-  :custom
-  (show-paren-when-point-inside-paren t)
-  (show-paren-when-point-in-periphery t)
-  )
+;; (use-package paren
+;;   :ensure nil
+;;   :defer 1
+;;   :hook (after-init . show-paren-mode)
+;;   :custom
+;;   (show-paren-when-point-inside-paren t)
+;;   (show-paren-when-point-in-periphery t)
+;;   )
 
 ;; Highlight current line in GUI
-(use-package hl-line
-  :ensure nil
-  :defer 1
-  :when (display-graphic-p)
-  :hook (after-init . global-hl-line-mode))
+;; (use-package hl-line
+;;   :ensure nil
+;;   :defer 1
+;;   :when (display-graphic-p)
+;;   :hook (after-init . global-hl-line-mode))
 
 ;; (use-package text-mode
 ;;   :ensure nil
@@ -195,12 +197,12 @@
 ;;  )
 
 ;; vterm
-(use-package vterm
-  :ensure t
-  :defer 1
-  )
+;; (use-package vterm
+;;   :ensure t
+;;   :defer 1
+;;   )
 
-(setq project-vc-extra-root-markers '(".project.el" ".projectile" ".ccls"))
+;; (setq project-vc-extra-root-markers '(".project.el" ".projectile" ".ccls"))
 
 ;;(use-package benchmark-init
 ;;  :ensure t

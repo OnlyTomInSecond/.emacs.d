@@ -96,8 +96,8 @@
 (use-package dabbrev
   ;; Swap M-/ and C-M-/
   :defer 1
-;;  :bind (("M-/" . dabbrev-completion)
-;;         ("C-M-/" . dabbrev-expand))
+  :bind (("M-/" . dabbrev-completion)
+        ("C-M-/" . dabbrev-expand))
   :config
   (add-to-list 'dabbrev-ignored-buffer-regexps "\\` ")
   ;; Since 29.1, use `dabbrev-ignored-buffer-regexps' on older.
@@ -325,16 +325,16 @@
 (global-set-key (kbd "M-n") #'flymake-goto-next-error)
 (global-set-key (kbd "M-p") #'flymake-goto-prev-error)
 
-(use-package yasnippet
-  :ensure t
-  :defer 1
-  :hook (prog-mode . yas-minor-mode)
-  )
+;; (use-package yasnippet
+;;   :ensure t
+;;   :defer 1
+;;   :hook (prog-mode . yas-minor-mode)
+;;   )
 
-(use-package yasnippet-snippets
-  :ensure t
-  :defer 1
-  )
+;; (use-package yasnippet-snippets
+;;   :ensure t
+;;   :defer 1
+;;   )
 
 ;; (use-package company-dict
 ;;   :ensure t

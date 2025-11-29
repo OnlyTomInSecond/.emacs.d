@@ -7,25 +7,30 @@
       icon-title-format frame-title-format)
 
 ;;config the elpa mirror in China
-(require 'package)
-(setq package-archives '(("gnu"    . "https://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
-                         ("nongnu" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")
-                         ("melpa"  . "https://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
-
+;;(require 'package)
+;; (setq package-archives '(("gnu"    . "https://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+;;                          ("nongnu" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")
+;;                          ("melpa"  . "Https://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
+;;(setq package-archives '(("gnu"    . "https://mirrors.bfsu.edu.cn/elpa/gnu/")
+;;                         ("nongnu" . "https://mirrors.bfsu.edu.cn/elpa/nongnu/")
+;;                         ("melpa"  . "https://mirrors.bfsu.edu.cn/elpa/melpa/")))
+(setq package-archives '(("gnu" . "https://mirrors.ustc.edu.cn/elpa/gnu/")
+                         ("melpa" . "https://mirrors.ustc.edu.cn/elpa/melpa/")
+                         ("nongnu" . "https://mirrors.ustc.edu.cn/elpa/nongnu/")))
 (package-initialize) ;; You might already have this line
 ;;Avoid execute package-refresh-contents many times
 ;;(when (not package-archive-contents)
 ;;  (package-refresh-contents))
 ;; Bootstrap `use-package'
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-(eval-and-compile
-  ;; (setq use-package-always-ensure nil)
-  ;; (setq use-package-always-defer nil)
-  ;; (setq use-package-always-demand nil)
-  ;; (setq use-package-expand-minimally nil)
-  (setq use-package-enable-imenu-support t))
+;; (unless (package-installed-p 'use-package)
+;;   (package-refresh-contents)
+;;   (package-install 'use-package))
+;; (eval-and-compile
+;;   (setq use-package-always-ensure nil)
+;;   (setq use-package-always-defer nil)
+;;   (setq use-package-always-demand nil)
+;;   (setq use-package-expand-minimally nil)
+;;   (setq use-package-enable-imenu-support t))
 (eval-when-compile
   (require 'use-package))
 
@@ -34,7 +39,7 @@
   :ensure t)
 
 ;; I wanna newer packages.
-(setq package-install-upgrade-built-in t)
+;; (setq package-install-upgrade-built-in t)
 
 
 ;; Bootstrap `quelpa'.
@@ -48,12 +53,14 @@
 ;;   (quelpa-checkout-melpa-p nil))
 
 ;; show line numbers and column numbers
-;; (global-display-line-numbers-mode 1)
-(column-number-mode 1)
+(global-display-line-numbers-mode 1)
+(setq display-line-numbers-type 'relative)
+;; (column-number-mode 1)
 
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-(when (file-exists-p custom-file)
-  (load custom-file))
+;; (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+;; (when (file-exists-p custom-file)
+;;   (load custom-file))
+
 (add-to-list 'load-path "~/.emacs.d/lisp/" )
 ;;
 ;;====================
@@ -82,3 +89,15 @@
 ;;					 gcs-done)))
 ;;
 ;;(setq gc-cons-threshold (* 10 1024 1024))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages nil))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
