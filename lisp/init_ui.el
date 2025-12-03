@@ -33,7 +33,6 @@
   :ensure t
 ;;  :defer 0.5
   :config
-  (setq custom-file "~/.emacs.d/custom.el")
   (load custom-file)
   (set-frame-font (font-spec :family "Monospace" :size 16))
   )
