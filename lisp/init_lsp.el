@@ -74,7 +74,7 @@
 
 ;; A few more useful configurations...
 (use-package emacs
-  :defer 1
+  :defer t
   :custom
   ;; TAB cycle if there are only few candidates
   ;; (completion-cycle-threshold 3)
@@ -227,7 +227,7 @@
 ;; Enable Code Folding
 (use-package hideshow
   :ensure t
-  :defer 1
+  :defer t
   :hook (prog-mode . hs-minor-mode)
   )
 ;; (use-package cmake-mode
@@ -274,7 +274,7 @@
 
 (use-package treesit-auto
   :ensure t
-  :defer 1
+  :defer t
   ;;:after (treesit)
   :hook (prog-mode . global-treesit-auto-mode)
   :config
@@ -292,7 +292,7 @@
 ;; This needs clang-format,yapf(python),shfmt,astyle installed
 (use-package format-all
   :ensure t
-  :defer 1
+  :defer t
   ;;:commands format-all-mode
   ;;:hook (prog-mode . format-all-mode)
   :config

@@ -39,7 +39,7 @@
   :ensure t)
 
 ;; I wanna newer packages.
-;; (setq package-install-upgrade-built-in t)
+;;(setq package-install-upgrade-built-in t)
 
 
 ;; Bootstrap `quelpa'.
