@@ -1,91 +1,53 @@
 ;; -*- lexical-binding: t -*-
 
-;;(setq gc-cons-percentage 0.1)
+;; ============================================================
+;; init.el — Emacs 主配置文件
+;; ============================================================
 
 ;; A simple frame title
 (setq frame-title-format '("%b - Emacs")
       icon-title-format frame-title-format)
 
-;;config the elpa mirror in China
-;;(require 'package)
-;; (setq package-archives '(("gnu"    . "https://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
-;;                          ("nongnu" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")
-;;                          ("melpa"  . "Https://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
-;;(setq package-archives '(("gnu"    . "https://mirrors.bfsu.edu.cn/elpa/gnu/")
-;;                         ("nongnu" . "https://mirrors.bfsu.edu.cn/elpa/nongnu/")
-;;                         ("melpa"  . "https://mirrors.bfsu.edu.cn/elpa/melpa/")))
+;; ELPA 镜像配置 (中科大镜像)
 (setq package-archives '(("gnu" . "https://mirrors.ustc.edu.cn/elpa/gnu/")
                          ("melpa" . "https://mirrors.ustc.edu.cn/elpa/melpa/")
                          ("nongnu" . "https://mirrors.ustc.edu.cn/elpa/nongnu/")))
-(package-initialize) ;; You might already have this line
-;;Avoid execute package-refresh-contents many times
-;;(when (not package-archive-contents)
-;;  (package-refresh-contents))
-;; Bootstrap `use-package'
-;; (unless (package-installed-p 'use-package)
-;;   (package-refresh-contents)
-;;   (package-install 'use-package))
-;; (eval-and-compile
-;;   (setq use-package-always-ensure nil)
-;;   (setq use-package-always-defer nil)
-;;   (setq use-package-always-demand nil)
-;;   (setq use-package-expand-minimally nil)
-;;   (setq use-package-enable-imenu-support t))
+(package-initialize)
+
+;; use-package 编译时设置
 (eval-when-compile
   (require 'use-package))
 
-;;Keep ~/.emacs.d/ clean.
+;; 让 use-package 默认 defer 以减少启动加载
+(setq use-package-always-defer nil
+      use-package-always-ensure nil
+      use-package-expand-minimally nil
+      use-package-enable-imenu-support t)
+
+;; Keep ~/.emacs.d/ clean.
 (use-package no-littering
   :ensure t)
+(require 'no-littering)
 
-;; I wanna newer packages.
-;;(setq package-install-upgrade-built-in t)
+;; 禁用 custom-file，避免 Customize 接口意外覆盖配置
+(setq custom-file nil)
+(add-to-list 'load-path (expand-file-name "lisp/" user-emacs-directory))
 
-
-;; Bootstrap `quelpa'.
-;; (use-package quelpa
-;;   :ensure t
-;;   :commands quelpa
-;;   :custom
-;;   (quelpa-git-clone-depth 1)
-;;   (quelpa-self-upgrade-p nil)
-;;   (quelpa-update-melpa-p nil)
-;;   (quelpa-checkout-melpa-p nil))
-
-;; show line numbers and column numbers
-(global-display-line-numbers-mode 1)
-(setq display-line-numbers-type 'relative)
-;; (column-number-mode 1)
-
-;; (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-;; (when (file-exists-p custom-file)
-;;   (load custom-file))
-(setq custom-file "~/.emacs.d/custom.el")
-(add-to-list 'load-path "~/.emacs.d/lisp/" )
-;;
-;;====================
-
-;; Set proxy
-;;(setq url-proxy-services '(("http" . "127.0.0.1:9080")
-;;                           ("https" . "127.0.0.1:9080")
-;;                           ))
-
+;; ============================================================
+;; 加载各个功能模块
+;; ============================================================
 (require 'init_base)
 (require 'init_ui)
 (require 'init_ivy)
 (require 'init_tools)
-;;(require 'init_ggtags)
 (require 'init_text)
 (require 'init_lsp)
-;;(require 'init_etags)
 
-;;Use a hook so the message doesn't get clobbered by other messages.
-;;(add-hook 'emacs-startup-hook
-;;		  (lambda ()
-;;			(message "Emacs ready in %s with %d garbage collections."
-;;					 (format "%.2f seconds"
-;;							 (float-time
-;;							  (time-subtract after-init-time before-init-time)))
-;;					 gcs-done)))
-;;
-;;(setq gc-cons-threshold (* 10 1024 1024))
+;; ============================================================
+;; 启动后报告启动耗时
+;; ============================================================
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (message "Emacs ready in %.2f seconds with %d GCs"
+                     (float-time (time-subtract after-init-time before-init-time))
+                     gcs-done)))

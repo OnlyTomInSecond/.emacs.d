@@ -3,212 +3,114 @@
 ;;; init_base
 ;;; Code:
 
-;; Settings for exec-path-from-shell
-;; fix the PATH environment variable issue
-;; (use-package exec-path-from-shell
-;;   :ensure t
-;;   :when (or (memq window-system '(mac ns x))
-;;             )
-;;   :init (exec-path-from-shell-initialize))
+;; 以下基础设置已移到 early-init.el:
+;;   - menu-bar-mode / tool-bar-mode / scroll-bar-mode (通过 default-frame-alist)
+;;   - inhibit-startup-screen / inhibit-splash-screen 等
 
-(setq inhibit-x-resources t
-      inhibit-default-init t
-      inhibit-startup-screen t
-      inhibit-startup-message t
-      inhibit-startup-buffer-menu t
-      use-dialog-box nil
-      use-file-dialog nil
-      )
-;; No bars and menus
-(setq inhibit-splash-screen t)
-(menu-bar-mode 0)
-(tool-bar-mode 0)
-(scroll-bar-mode 0)
+(setq use-dialog-box nil
+      use-file-dialog nil)
 
-;;(ido-mode 1)
-;;(ido-everywhere 1)
-
-;; Pixel sized window
-;; (setq window-resize-pixelwise t
-;;       frame-resize-pixelwise t)
-
-;; Linux specific
-;;(setq x-gtk-use-system-tooltips t
-;;      x-underline-at-descent-line t)
+;; 相对行号 —— 启动后空闲 1 秒再启用，避免启动时大量 font-lock 开销
+(run-with-idle-timer 1 nil
+ (lambda ()
+   (setq display-line-numbers-type 'relative)
+   (global-display-line-numbers-mode 1)))
 
 ;; No ToolTip under mouse, just display in minibuffer
 (tooltip-mode -1)
-;; Change text direction to "left-to-right"
-;; (setq bidi-paragraph-direction 'left-to-right
-;;       bidi-inhibit-bpa t)
 
 ;; No backup files
 (setq make-backup-files nil
       auto-save-default nil)
-;; No lock file
 (setq create-lockfiles nil)
 
 ;; No gc for font caches
 (setq inhibit-compacting-font-caches t)
 
-;; Improve display
-;; (setq display-raw-bytes-as-hex t)
-;; (setq redisplay-skip-fontification-on-input t)
+;; ============================================================
+;; 全局性能优化设置
+;; ============================================================
+
+;; 增加进程 IO buffer 大小 —— 提升 LSP 服务器通信速度
+(setq read-process-output-max (* 4 1024 1024))
+
+;; 输入时跳过 fontification，提升响应速度
+(setq redisplay-skip-fontification-on-input t)
+
+;; 快速但粗略的滚动 —— 大文件滚动更流畅
+(setq fast-but-imprecise-scrolling t)
+
+;; 禁止鼠标自动滚动（避免滚动时重新 fontify）
+(setq mouse-wheel-progressive-speed nil)
+
+;; Native Compilation 设置 (Emacs 29+)
+(when (fboundp 'native-comp-available-p)
+  (setq native-comp-async-report-warnings-errors 'silent)
+  (setq native-comp-jit-compilation t))
+
+;; 减少自动保存频率
+(setq auto-save-interval 500
+      auto-save-timeout 30)
+
+;; 禁用不常用的内置功能以减少内存占用
+(setq history-length 200
+      history-delete-duplicates t
+      message-log-max 200)
+
+;; 长行优化：Emacs 29+ 内置长行检测
+(setq long-line-threshold 500
+      large-hscroll-threshold 2000)
+
+;; 大文件警告阈值 50MB
+(setq large-file-warning-threshold (* 50 1024 1024))
 
 ;; No annoying bell
 (setq ring-bell-function 'ignore)
 
-;; No eyes distraction
+;; No blinking cursor
 (blink-cursor-mode 0)
-;; Smooth scroll & friends
-;; (setq scroll-step 2
-;;       scroll-margin 4
-;;       hscroll-step 2
-;;       hscroll-margin 4
-;;       scroll-conservatively 50
-;;       scroll-preserve-screen-position 'always)
-
-;; The nano style for truncated long lines.
-;; (setq auto-hscroll-mode 'current-line)
 
 ;; Disable auto vertical scroll for tall lines
 (setq auto-window-vscroll nil)
 
-;; Dont move points out of eyes
+;; Paste at point, not at mouse cursor
 (setq mouse-yank-at-point t)
 
-;;(setq-default fill-column 80)
-;; No tabs
-;;(setq-default indent-tabs-mode nil)
+;; Tab宽度
+;; Tab 宽度：用 setq-default 确保所有 buffer 生效
 (setq-default tab-width 4)
+;; TAB 先缩进，已缩进则触发补全 (corfu 接管候选列表)
 (setq tab-always-indent 'complete)
-;; Sane defaults
+;; 需要输入字面 TAB 时: C-q TAB 或 Shift+TAB
+
+;; Use shorter answers (y/n instead of yes/no)
 (setq use-short-answers t)
 (unless (>= emacs-major-version 28)
   (fset 'yes-or-no-p 'y-or-n-p))
 
-;; Inhibit switching out from `y-or-n-p' and `read-char-choice'
-;; (setq y-or-n-p-use-read-key t)
-;; (setq read-char-choice-use-read-key t)
-
+;; Auto pair brackets
 (electric-pair-mode 1)
 
-;; show all space and tabs
-;;(use-package whitespace-mode
-;;  :defer 1
-;;  :hook (prog-mode . whitespace-mode)
-;;  :custom
-;;  (
-;;    (whitespace-big-indent ((t nil)))
-;;    )
-;;  )
-
-;; enable windmove
-;; (windmove-default-keybindings)
-;; (setq window-wrap-around t)
-;; allow restore window
-;; (winner-mode 1)
-
-;; move-dup, move/copy line or region
-;; (use-package move-dup
-;;   :ensure t
-;;   :defer 1
-;;   :hook (after-init . global-move-dup-mode))
-
-;; Highlight parenthesises
-;; (use-package paren
-;;   :ensure nil
-;;   :defer 1
-;;   :hook (after-init . show-paren-mode)
-;;   :custom
-;;   (show-paren-when-point-inside-paren t)
-;;   (show-paren-when-point-in-periphery t)
-;;   )
-
-;; Highlight current line in GUI
-;; (use-package hl-line
-;;   :ensure nil
-;;   :defer 1
-;;   :when (display-graphic-p)
-;;   :hook (after-init . global-hl-line-mode))
-
-;; (use-package text-mode
-;;   :ensure nil
-;;   :defer t
-;;   :custom
-;;   ;; better word wrapping for CJK characters
-;;   (word-wrap-by-category t)
-;;   ;; paragraphs
-;;   (sentence-end "\\([，。、！？]\\|……\\|[,.?!][]\"')}]*\\($\\|[ \t]\\)\\)[ \t\n]*")
-;;   (sentence-end-double-space nil))
-
+;; Minibuffer 设置
 (use-package minibuffer
   :defer t
-  ;; :bind (:map minibuffer-local-map
-  ;;             ([escape] . abort-recursive-edit)
-  ;;             :map minibuffer-local-ns-map
-  ;;             ([escape] . abort-recursive-edit)
-  ;;             :map minibuffer-local-completion-map
-  ;;             ([escape] . abort-recursive-edit)
-  ;;             :map minibuffer-local-must-match-map
-  ;;             ([escape] . abort-recursive-edit)
-  ;;             :map minibuffer-local-isearch-map
-  ;;             ([escape] . abort-recursive-edit))
   :custom
   (completion-auto-help t)
   (completion-show-help nil)
-  ;; Cycle completions regardless of the count
   (completion-cycle-threshold nil)
-  ;;(enable-recursive-minibuffers t)
   (minibuffer-depth-indicate-mode t)
   (minibuffer-eldef-shorten-default t)
   (minibuffer-electric-default-mode t)
-  ;; One frame one minibuffer.
   (minibuffer-follows-selected-frame nil)
-  ;; Ignore cases when complete
   (completion-ignore-case t)
   (read-buffer-completion-ignore-case t)
   (read-file-name-completion-ignore-case t)
-  ;; `selectrum', `vertico' and `icomplete' will honoring
-  ;; (completion-styles '(basic partial-completion substring flex))
   (completion-category-overrides '((buffer (styles . (flex)))))
-  ;; vertical view
-  ;; (completions-format 'one-column)
-  ;; (completions-detailed t)
   )
-;; Set language environment to UTF-8
+
+;; UTF-8 everywhere
 (set-language-environment "UTF-8")
 (set-default-coding-systems 'utf-8)
-
-;; Enable visual-line-mode
-;;(global-visual-line-mode 1)
-
-;; auto update packages
-;;(use-package auto-package-update
-;;  :ensure t
-;;  :defer 1
-;;  :custom
-;;  (auto-package-update-interval 7)
-;;  (auto-package-update-prompt-before-update t)
-;;  (auto-package-update-hide-results t)
-;;  :config
-;;  (auto-package-update-maybe)
-;;  (auto-package-update-at-time "09:00")
-;;  )
-
-;; vterm
-;; (use-package vterm
-;;   :ensure t
-;;   :defer 1
-;;   )
-
-;; (setq project-vc-extra-root-markers '(".project.el" ".projectile" ".ccls"))
-
-;;(use-package benchmark-init
-;;  :ensure t
-;;  :config
-  ;; To disable collection of benchmark data after init is done.
-;;  (add-hook 'after-init-hook 'benchmark-init/deactivate))
 
 (provide 'init_base)
 ;;; init_base.el ends here
