@@ -31,6 +31,8 @@
 
 ;; 禁用 custom-file，避免 Customize 接口意外覆盖配置
 (setq custom-file nil)
+;; 完全阻止 Emacs 写入任何 custom 设置
+(advice-add 'custom-save-all :override #'ignore)
 (add-to-list 'load-path (expand-file-name "lisp/" user-emacs-directory))
 
 ;; ============================================================
@@ -49,5 +51,5 @@
 (add-hook 'emacs-startup-hook
           (lambda ()
             (message "Emacs ready in %.2f seconds with %d GCs"
-                     (float-time (time-subtract after-init-time before-init-time))
+					 (float-time (time-subtract after-init-time before-init-time))
                      gcs-done)))

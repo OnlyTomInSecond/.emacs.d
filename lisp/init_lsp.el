@@ -20,32 +20,12 @@
   (global-corfu-mode)
   )
 
-;; A few more useful configurations...
-(use-package emacs
-  :defer t
-  :custom
-  ;; TAB cycle if there are only few candidates
-  ;; (completion-cycle-threshold 3)
-
-  ;; Enable indentation+completion using the TAB key.
-  ;; `completion-at-point' is often bound to M-TAB.
-  ;; (tab-always-indent 'complete)
-
-  ;; Emacs 30 and newer: Disable Ispell completion function.
-  ;; Try `cape-dict' as an alternative.
-  (text-mode-ispell-word-completion nil)
-
-  ;; Hide commands in M-x which do not apply to the current mode.  Corfu
-  ;; commands are hidden, since they are not used via M-x. This setting is
-  ;; useful beyond Corfu.
-  (read-extended-command-predicate #'command-completion-default-include-p))
-
 ;; Use Dabbrev with Corfu!
 (use-package dabbrev
   ;; Swap M-/ and C-M-/
   :defer 1
   :bind (("M-/" . dabbrev-completion)
-        ("C-M-/" . dabbrev-expand))
+         ("C-M-/" . dabbrev-expand))
   :config
   (add-to-list 'dabbrev-ignored-buffer-regexps "\\` ")
   ;; Since 29.1, use `dabbrev-ignored-buffer-regexps' on older.
@@ -63,17 +43,17 @@
   :hook
   (prog-mode . (lambda ()
                  (unless (eq major-mode 'emacs-lisp-mode)
-                   (run-with-idle-timer 0.3 nil #'eglot-ensure))))
+                   (eglot-ensure))))
 
   :config
   (setq eglot-server-programs
         (append '(
-                 ((c-mode c-ts-mode c++-mode c++-ts-mode c-or-c++-mode c-or-c++-ts-mode)
-                  . ("bash" "/home/whh/.emacs.d/bin/ccls.sh"))
-                 ((python-mode python-ts-mode). ("bash" "/home/whh/.emacs.d/bin/ty.sh"))
-                 )
-               eglot-server-programs
-               ))
+                  ((c-mode c-ts-mode c++-mode c++-ts-mode c-or-c++-mode c-or-c++-ts-mode)
+                   . ("bash" "/home/whh/.emacs.d/bin/ccls.sh"))
+                  ((python-mode python-ts-mode). ("bash" "/home/whh/.emacs.d/bin/ty.sh"))
+                  )
+				eglot-server-programs
+				))
   ;; Eglot 性能优化
   (setq eglot-send-changes-idle-time 0.5        ;; 减少高频变更发送
         eglot-ignored-server-capabilities

@@ -11,10 +11,10 @@
       use-file-dialog nil)
 
 ;; 相对行号 —— 启动后空闲 1 秒再启用，避免启动时大量 font-lock 开销
-(run-with-idle-timer 1 nil
- (lambda ()
-   (setq display-line-numbers-type 'relative)
-   (global-display-line-numbers-mode 1)))
+(run-with-idle-timer 0.5 nil
+					 (lambda ()
+					   (setq display-line-numbers-type 'relative)
+					   (global-display-line-numbers-mode 1)))
 
 ;; No ToolTip under mouse, just display in minibuffer
 (tooltip-mode -1)
@@ -64,32 +64,48 @@
 ;; 大文件警告阈值 50MB
 (setq large-file-warning-threshold (* 50 1024 1024))
 
-;; No annoying bell
-(setq ring-bell-function 'ignore)
+(use-package emacs
+  :defer t
+  :config
+  (setq-default tab-width 4)
+  (set-frame-font (font-spec :family "Monospace" :size 16))
+  :custom
+  ;; TAB cycle if there are only few candidates
+  ;; (completion-cycle-threshold 3)
 
-;; No blinking cursor
-(blink-cursor-mode 0)
+  ;; Emacs 30 and newer: Disable Ispell completion function.
+  ;; Try `cape-dict' as an alternative.
+  (tab-always-indent 'complete)
+  (text-mode-ispell-word-completion nil)
+  ;; No blinking cursor
+  (blink-cursor-mode 0)
 
-;; Disable auto vertical scroll for tall lines
-(setq auto-window-vscroll nil)
+  ;; Disable auto vertical scroll for tall lines
+  (auto-window-vscroll nil)
 
-;; Paste at point, not at mouse cursor
-(setq mouse-yank-at-point t)
+  ;; Paste at point, not at mouse cursor
+  (mouse-yank-at-point t)
 
-;; Tab宽度
-;; Tab 宽度：用 setq-default 确保所有 buffer 生效
-(setq-default tab-width 4)
-;; TAB 先缩进，已缩进则触发补全 (corfu 接管候选列表)
-(setq tab-always-indent 'complete)
-;; 需要输入字面 TAB 时: C-q TAB 或 Shift+TAB
+  ;; No annoying bell
+  (ring-bell-function 'ignore)
+
+  ;; Auto pair brackets
+  (electric-pair-mode 1)
+
+  ;; Hide commands in M-x which do not apply to the current mode.  Corfu
+  ;; commands are hidden, since they are not used via M-x. This setting is
+  ;; useful beyond Corfu.
+  (read-extended-command-predicate #'command-completion-default-include-p))
 
 ;; Use shorter answers (y/n instead of yes/no)
 (setq use-short-answers t)
 (unless (>= emacs-major-version 28)
   (fset 'yes-or-no-p 'y-or-n-p))
 
-;; Auto pair brackets
-(electric-pair-mode 1)
+;; 上下移动行/选区 (Alt+↑/↓)
+(use-package move-dup
+  :ensure t
+  :hook (after-init . global-move-dup-mode))
 
 ;; Minibuffer 设置
 (use-package minibuffer
