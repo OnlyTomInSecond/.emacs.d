@@ -7,10 +7,12 @@
   :hook (after-init . vertico-mode)
   :custom
   (vertico-cycle t)
-  (vertico-count 16)
-  (vertico-resize t)
+  (vertico-count 8)        ;; 最多显示 10 个候选
+  (vertico-resize t)        ;; 自动适应候选数量
   :config
-  (setq vertico-buffer-display-delay 0.1))
+  (setq vertico-buffer-display-delay 0.1)
+  ;; minibuffer 最大高度不超过 frame 高度的 30%
+  (setq max-mini-window-height 0.3))
 
 (use-package savehist
   :ensure t
